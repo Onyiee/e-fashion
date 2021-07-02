@@ -6,13 +6,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+
 @DataMongoTest
 class OrderRepositoryTest {
     @Autowired
@@ -49,7 +47,7 @@ class OrderRepositoryTest {
 
         orderRepository.save(order1);
 
-        LocalDate orderDate2 = LocalDate.now();
+        LocalDate orderDate2 = LocalDate.of(2021, 1,18);
         address2.setHouseNumber(312);
         address2.setStreetName("herbert street");
         address2.setState("Lagos");
@@ -65,11 +63,29 @@ class OrderRepositoryTest {
 
         List<Order> orders = orderRepository.findOrdersByDateOrdered(orderDate);
         assertThat(orders.get(0).getDateOrdered()).isEqualTo(orderDate);
-        assertThat(orders.get(1).getDateOrdered()).isEqualTo(orderDate2);
-        assertThat(orders.size()).isEqualTo(2);
+        assertThat(orders.size()).isEqualTo(1);
     }
 
     @Test
     void findOrdersByCompleted() {
+        order1.setCompleted(true);
+        order2.setCompleted(false);
+
+        orderRepository.save(order1);
+        orderRepository.save(order2);
+
+        List<Order> orderList = orderRepository.findOrdersByCompletedTrue();
+        assertThat(orderList.size()).isEqualTo(1);
+        assertThat(orderList.get(0).isCompleted()).isEqualTo(true);
+    }
+
+    @Test
+    void findOrdersByCompletedFalse(){
+        order2.setCompleted(false);
+        orderRepository.save(order2);
+
+        List<Order> orders = orderRepository.findOrdersByCompletedFalse();
+        assertThat(orders.size()).isEqualTo(1);
+        assertThat(orders.get(0).isCompleted()).isEqualTo(false);
     }
 }

@@ -5,16 +5,14 @@ import com.houseofo.data.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
+
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.*;
-import static org.junit.jupiter.api.Assertions.*;
-@DataMongoTest
+
+
 class UserRepositoryTest {
     @Autowired
     UserRepository userRepository;
