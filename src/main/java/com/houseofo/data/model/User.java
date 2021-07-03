@@ -20,4 +20,5 @@ public class User {
     @DBRef
     private List<Order> orders;
     private List<Address> addresses;
+    private String designerBrand;
 }

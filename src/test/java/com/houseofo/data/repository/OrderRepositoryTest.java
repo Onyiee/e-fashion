@@ -1,6 +1,8 @@
 package com.houseofo.data.repository;
 
 import com.houseofo.data.model.*;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import java.util.List;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @DataMongoTest
+@Slf4j
 class OrderRepositoryTest {
     @Autowired
     OrderRepository orderRepository;
@@ -28,8 +31,13 @@ class OrderRepositoryTest {
         order2 = new Order();
         address = new Address();
         address2 = new Address();
-
     }
+    @AfterEach
+    void tearDown(){
+        orderRepository.deleteAll();
+    }
+
+
 
     @Test
     void findOrdersByDateOrdered() {
@@ -58,8 +66,9 @@ class OrderRepositoryTest {
         order2.setDateOrdered(orderDate2);
 
         orderRepository.save(order2);
-        System.out.println(order1);
-        System.out.println(order2);
+        log.info("order1 after saving in repository-->{}",order1);
+        log.info("order2 after saving in repository-->{}",order2);
+
 
         List<Order> orders = orderRepository.findOrdersByDateOrdered(orderDate);
         assertThat(orders.get(0).getDateOrdered()).isEqualTo(orderDate);

@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface DressRepository extends MongoRepository<Dress,String> {
-    List<Dress> findDressesByName(String name);
+//    List<Dress> findDressesByName(String name);
     List<Dress> findDressesByDesigner(User designer);
     List<Dress> findDressesBySize(Size size);
     List<Dress> findDressesByType(Type type);

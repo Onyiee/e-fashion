@@ -12,7 +12,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Dress {
     @Id
     private String id;
-    private String name;
     private Size size;
     private String image;
     private Type type;
