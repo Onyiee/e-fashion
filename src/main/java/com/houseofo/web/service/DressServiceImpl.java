@@ -1,30 +1,32 @@
 package com.houseofo.web.service;
 
+import com.fasterxml.jackson.annotation.JacksonInject;
 import com.houseofo.data.dtos.DressDto;
 import com.houseofo.data.model.*;
 import com.houseofo.data.repository.DressRepository;
 import com.houseofo.data.repository.UserRepository;
-import com.houseofo.exceptions.RoleException;
 import com.houseofo.exceptions.SizeException;
 import com.houseofo.exceptions.TypeException;
 import com.houseofo.exceptions.UserException;
 import lombok.extern.slf4j.Slf4j;;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
+@Service
 public class DressServiceImpl implements DressService {
     @Autowired
     DressRepository dressRepository;
 
     @Autowired
     ModelMapper modelMapper;
+
     @Autowired
     UserRepository userRepository;
-
 
     @Override
     public List<DressDto> findAllDresses() {
@@ -41,15 +43,14 @@ public class DressServiceImpl implements DressService {
     public List<DressDto> findDressByDesigner(String designerBrand) throws UserException {
         User user = userRepository.findUserByDesignerBrand(designerBrand)
                 .orElseThrow(()-> new UserException("No matching designer found."));
-
+                {
             List<Dress> dressesByDesigner = dressRepository.findDressesByDesigner(user);
             List<DressDto> dressDtos = dressesByDesigner
                     .stream()
                     .map(dress -> modelMapper.map(dress, DressDto.class))
                     .collect(Collectors.toList());
             return dressDtos;
-
-
+        }
     }
 
     @Override
@@ -71,7 +72,7 @@ public class DressServiceImpl implements DressService {
     public List<DressDto> findDressBySize(String size) throws SizeException {
         for (Size size1 : Size.values()) {
             if (size1.name().equalsIgnoreCase(size)) {
-                List<Dress> dresses = dressRepository.findDressesBySize(Size.SIZE6);
+                List<Dress> dresses = dressRepository.findDressesBySize(size1);
                 List<DressDto> dressDtos = dresses.stream()
                         .map(dress -> modelMapper.map(
                                 dress, DressDto.class

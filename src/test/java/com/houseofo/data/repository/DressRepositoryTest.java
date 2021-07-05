@@ -39,19 +39,19 @@ class DressRepositoryTest {
         user2 = new User();
     }
 
-    @Test
-    void findDressesByName() {
-        dress.setName("Coco");
-        dress2.setName("Pamela");
-        dressRepository.save(dress);
-        log.info("after saving dress in repository -->{}",dress);
-        dressRepository.save(dress2);
-        log.info("after saving dress2 in repository -->{}",dress2);
-
-        List<Dress> dresses = dressRepository.findDressesByName("Coco");
-        log.info("asserting that first dress is Coco -->{}",dress);
-        assertThat(dresses.get(0).getName()).isEqualTo("Coco");
-    }
+//    @Test
+//    void findDressesByName() {
+//        dress.setName("Coco");
+//        dress2.setName("Pamela");
+//        dressRepository.save(dress);
+//        log.info("after saving dress in repository -->{}",dress);
+//        dressRepository.save(dress2);
+//        log.info("after saving dress2 in repository -->{}",dress2);
+//
+//        List<Dress> dresses = dressRepository.findDressesByName("Coco");
+//        log.info("asserting that first dress is Coco -->{}",dress);
+//        assertThat(dresses.get(0).getName()).isEqualTo("Coco");
+//    }
 
     @Test
     void findDressesByDesigner() {
