@@ -17,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,18 +36,12 @@ class DressServiceImplTest {
     @InjectMocks
     DressServiceImpl dressServiceImpl;
 
-    Dress dress;
-    Dress dress1;
-
     User user;
     User user1;
 
 
     @BeforeEach
     void setUp() {
-
-        dress = new Dress();
-        dress1 = new Dress();
 
         user = new User();
         user1 = new User();
@@ -60,30 +54,10 @@ class DressServiceImplTest {
 
     @Test
     void findAllDresses() {
-        //given
-        user.setRole(Role.DESIGNER);
-        user.setSize(Size.SIZE14);
-        userRepository.save(user);
-
-        dress.setSize(Size.SIZE8);
-        dress.setType(Type.FITTED_GOWN);
-        dress.setDesigner(user);
-
-        user1.setRole(Role.DESIGNER);
-        user1.setSize(Size.SIZE18);
-        userRepository.save(user1);
-
-        dress1.setSize(Size.SIZE2);
-        dress1.setType(Type.PALAZZO_TROUSERS);
-        dress1.setDesigner(user1);
-
-
         //when
-        dressRepository.findAll();
+       dressServiceImpl.findAllDresses();
 
         //then
-        ArgumentCaptor<Dress> dressArgumentCaptor
-                = ArgumentCaptor.forClass(Dress.class);
         verify(dressRepository).findAll();
 
     }
@@ -110,9 +84,6 @@ class DressServiceImplTest {
     @Test
     void findDressByType() throws TypeException {
         //given
-        dress.setType(Type.FLAY_SKIRT);
-        dress1.setType(Type.PALAZZO_TROUSERS);
-
         //when
         dressServiceImpl.findDressByType("FLAY_SKIRT");
 

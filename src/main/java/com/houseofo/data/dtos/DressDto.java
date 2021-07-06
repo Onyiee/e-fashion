@@ -8,6 +8,7 @@ import lombok.Data;
 
 @Data
 public class DressDto {
+    private String id;
     private String name;
     private Size size;
     private String image;
