@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -87,26 +88,24 @@ class DressServiceImplTest {
 
     }
 
-//    @Test
-//    void findDressByDesigner() throws UserException {
-//        //given
-//        user.setRole(Role.DESIGNER);
-//
-//        user.setDesignerBrand("cherryBerry");
-//
-//        dress.setDesigner(user);
-//
-//        //when
-//        dressServiceImpl.findDressByDesigner("cherryBerry");
-//
-//        //then
-//        ArgumentCaptor<User> dressArgumentCaptor =
-//                ArgumentCaptor.forClass(User.class);
-//        verify(dressRepository).findDressesByDesigner(dressArgumentCaptor.capture());
-//
-//         User captorUserValue = dressArgumentCaptor.getValue();
-//         assertThat(captorUserValue).isEqualTo(user);
-//    }
+    @Test
+    void findDressByDesigner() throws UserException {
+        //given
+        user.setRole(Role.DESIGNER);
+        user.setDesignerBrand("cherryBerry");
+        when(userRepository.findUserByDesignerBrand(anyString())).thenReturn(Optional.of(user));
+
+        //when
+        dressServiceImpl.findDressByDesigner("cherryBerry");
+
+        //then
+        ArgumentCaptor<User> dressArgumentCaptor =
+                ArgumentCaptor.forClass(User.class);
+        verify(dressRepository).findDressesByDesigner(dressArgumentCaptor.capture());
+         User captorUserValue = dressArgumentCaptor.getValue();
+         assertThat(captorUserValue).isEqualTo(user);
+
+    }
 
     @Test
     void findDressByType() throws TypeException {

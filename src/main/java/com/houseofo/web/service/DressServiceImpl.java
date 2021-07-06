@@ -1,6 +1,4 @@
 package com.houseofo.web.service;
-
-import com.fasterxml.jackson.annotation.JacksonInject;
 import com.houseofo.data.dtos.DressDto;
 import com.houseofo.data.model.*;
 import com.houseofo.data.repository.DressRepository;

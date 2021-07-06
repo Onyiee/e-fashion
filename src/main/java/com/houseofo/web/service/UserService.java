@@ -12,6 +12,6 @@ import java.util.List;
 public interface UserService {
     List<User> findUserById(String id);
     List<User> findUserByRole(Role role);
-    User updateUser(String id); // fix
+    User updateUser(String id);
     void deleteUser(String id);
 }
