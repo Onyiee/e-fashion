@@ -30,7 +30,6 @@ import static org.mockito.Mockito.when;
 @Service
 @Slf4j
 @ExtendWith(MockitoExtension.class)
-@DataMongoTest
 class OrderServiceImplTest {
     @Mock
     OrderRepository orderRepository;
@@ -45,12 +44,13 @@ class OrderServiceImplTest {
     OrderServiceImpl orderService;
 
     Order order;
+    Order order1;
 
     @BeforeEach
     void setUp() {
-        orderService = new OrderServiceImpl();
-        MockitoAnnotations.openMocks(this);
+
         order = new Order();
+        order1 = new Order();
     }
 
     @AfterEach
@@ -61,22 +61,14 @@ class OrderServiceImplTest {
     @Test
     void findOrderByDateOrdered() {
         LocalDate dateOrdered = LocalDate.now();
-        order.setDateOrdered(dateOrdered);
-
         orderService.findOrderByDateOrdered(dateOrdered);
-
-        verify(orderRepository).findOrdersByDateOrdered(dateOrdered);
-
-
-        log.info("the date ordered for ->{} is ->{}", order, dateOrdered);
-
-        assertThat(order.getDateOrdered()).isEqualTo(dateOrdered);
-
-
+        verify(orderRepository).findOrdersByDateOrdered(dateOrdered);;
     }
 
     @Test
     void findCompletedOrders() {
+        orderService.findCompletedOrders();
+        verify(orderRepository).findOrdersByCompletedTrue();
     }
 
 }

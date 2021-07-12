@@ -40,12 +40,11 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public List<OrderDto> findCompletedOrders() {
-//        List<Order> orderList = orderRepository.findOrdersByCompletedTrue();
-//        List<OrderDto> orderDtoList = orderList
-//                .stream()
-//                .map(order -> modelMapper.map(order,OrderDto.class))
-//                .collect(Collectors.toList());
-//        return orderDtoList;
-        return null;
+        List<Order> orderList = orderRepository.findOrdersByCompletedTrue();
+        List<OrderDto> orderDtoList = orderList
+                .stream()
+                .map(order -> modelMapper.map(order,OrderDto.class))
+                .collect(Collectors.toList());
+        return orderDtoList;
     }
 }
