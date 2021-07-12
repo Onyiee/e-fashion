@@ -111,7 +111,5 @@ class DressServiceImplTest {
                 .findDressesBySize(dressArgumentCaptor.capture());
         Size captorValue = dressArgumentCaptor.getValue();
         assertThat(captorValue).isEqualTo(size);
-
-
     }
 }

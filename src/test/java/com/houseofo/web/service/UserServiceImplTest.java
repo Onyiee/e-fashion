@@ -5,6 +5,7 @@ import com.houseofo.data.model.Role;
 import com.houseofo.data.model.User;
 import com.houseofo.data.repository.UserRepository;
 import com.houseofo.exceptions.UserException;
+import com.houseofo.util.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,8 +21,6 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -36,11 +35,16 @@ class UserServiceImplTest {
     @Mock
     ModelMapper modelMapper;
 
+    @Mock
+    UserMapper userMapper;
+
+
     @InjectMocks
     UserServiceImpl userServiceImpl;
 
 
     User user;
+
 
     @BeforeEach
     void setUp() {
@@ -49,6 +53,7 @@ class UserServiceImplTest {
 
     @AfterEach
     void tearDown() {
+        user = null;
     }
 
     @Test
@@ -85,10 +90,45 @@ class UserServiceImplTest {
     }
 
     @Test
-    void updateUser() {
+    void updateUser() throws UserException {
+        //given
+        String id = "testId";
+        user.setId(id);
+
+        when(userRepository.findById(anyString())).thenReturn(Optional.of(user));
+
+        UserDto userDto = new UserDto();
+
+        userServiceImpl.updateUser(userDto, id);
+
+        verify(userRepository).findById(id);
+        verify(userRepository).save(user);
     }
 
     @Test
-    void deleteUser() {
+    void deleteUser() throws UserException {
+        //given
+        String id = "testId";
+        user.setId(id);
+
+        //when
+        when(userRepository.findById(anyString())).thenReturn(Optional.of(user));
+
+        //then
+
+        userServiceImpl.deleteUser(id);
+
+        verify(userRepository).findById(id);
+        verify(userRepository).delete(user);
+
+        ArgumentCaptor<User> captor
+                = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).delete(captor.capture());
+        User user1 = captor.getValue();
+
+
+        assertThat(user1).isEqualTo(user);
+        log.info("user is -->{}",user);
+
     }
 }

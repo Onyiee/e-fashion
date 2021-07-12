@@ -15,5 +15,4 @@ public interface OrderRepository extends MongoRepository<Order,String> {
     List<Order> findOrdersByCompletedTrue();
     List<Order> findOrdersByCompletedFalse();
 
-
 }

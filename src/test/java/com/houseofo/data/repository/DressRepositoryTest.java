@@ -6,15 +6,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.data.mongodb.core.MongoOperations;
 
 import java.util.List;
 
 import static com.houseofo.data.model.Size.SIZE2;
 import static com.houseofo.data.model.Size.SIZE8;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+
 
 @DataMongoTest
 @Slf4j
@@ -39,19 +37,6 @@ class DressRepositoryTest {
         user2 = new User();
     }
 
-//    @Test
-//    void findDressesByName() {
-//        dress.setName("Coco");
-//        dress2.setName("Pamela");
-//        dressRepository.save(dress);
-//        log.info("after saving dress in repository -->{}",dress);
-//        dressRepository.save(dress2);
-//        log.info("after saving dress2 in repository -->{}",dress2);
-//
-//        List<Dress> dresses = dressRepository.findDressesByName("Coco");
-//        log.info("asserting that first dress is Coco -->{}",dress);
-//        assertThat(dresses.get(0).getName()).isEqualTo("Coco");
-//    }
 
     @Test
     void findDressesByDesigner() {

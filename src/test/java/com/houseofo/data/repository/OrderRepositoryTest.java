@@ -66,8 +66,8 @@ class OrderRepositoryTest {
         order2.setDateOrdered(orderDate2);
 
         orderRepository.save(order2);
-        log.info("order1 after saving in repository-->{}",order1);
-        log.info("order2 after saving in repository-->{}",order2);
+        log.info("order1 after saving in db-->{}",order1);
+        log.info("order2 after saving in db-->{}",order2);
 
 
         List<Order> orders = orderRepository.findOrdersByDateOrdered(orderDate);

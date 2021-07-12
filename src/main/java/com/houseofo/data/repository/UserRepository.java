@@ -13,7 +13,5 @@ public interface UserRepository extends MongoRepository<User,String> {
 
     List<User> findUsersByRole(Role role);
     Optional<User> findUserByDesignerBrand(String designerBrand);
-
-
-    List<User> findUserById(String userId);
+    User findUserById(String userId);
 }

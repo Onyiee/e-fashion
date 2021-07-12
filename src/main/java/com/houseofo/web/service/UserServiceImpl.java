@@ -5,21 +5,25 @@ import com.houseofo.data.model.Role;
 import com.houseofo.data.model.User;
 import com.houseofo.data.repository.UserRepository;
 import com.houseofo.exceptions.UserException;
+import com.houseofo.util.UserMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements UserService{
+
+public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
 
     @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    UserMapper mapper;
 
     @Override
     public UserDto findUserById(String id) throws UserException {
@@ -38,14 +42,18 @@ public class UserServiceImpl implements UserService{
         return userDtos;
     }
 
-    @Override
-    public User updateUser(String id, UserDto updateContent) {
 
-        return null;
+    public void updateUser(UserDto userDto,String id) throws UserException {
+        User myUser = userRepository.findById(id)
+                .orElseThrow(()-> new UserException("No matching user ID found."));
+        mapper.updateUserFromDto(userDto, myUser);
+        userRepository.save(myUser);
     }
 
     @Override
-    public void deleteUser(String id) {
-
+    public void deleteUser(String id) throws UserException {
+        User myUser = userRepository.findById(id)
+                .orElseThrow(()-> new UserException("No matching user ID found."));
+        userRepository.delete(myUser);
     }
 }
