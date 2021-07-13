@@ -3,6 +3,7 @@ import com.houseofo.data.dtos.DressDto;
 import com.houseofo.data.model.*;
 import com.houseofo.data.repository.DressRepository;
 import com.houseofo.data.repository.UserRepository;
+import com.houseofo.exceptions.DressException;
 import com.houseofo.exceptions.SizeException;
 import com.houseofo.exceptions.TypeException;
 import com.houseofo.exceptions.UserException;
@@ -25,6 +26,27 @@ public class DressServiceImpl implements DressService {
 
     @Autowired
     UserRepository userRepository;
+
+
+    @Override
+    public DressDto findById(String id) throws DressException {
+        Dress dress = dressRepository.findById(id)
+                .orElseThrow(()-> new DressException("Id does not match any dress"));
+        DressDto dto = modelMapper.map(dress, DressDto.class);
+        return dto;
+    }
+
+    @Override
+    public void updateDress(String id, DressDto updateContent) {
+
+    }
+
+    @Override
+    public void deleteDress(String id) throws DressException {
+        Dress dress = dressRepository.findById(id)
+                .orElseThrow(()-> new DressException("Id does not match any dress"));
+        dressRepository.delete(dress);
+    }
 
     @Override
     public List<DressDto> findAllDresses() {

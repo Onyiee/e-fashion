@@ -1,8 +1,10 @@
 package com.houseofo.web.service;
 
+import com.houseofo.data.dtos.DressDto;
 import com.houseofo.data.model.*;
 import com.houseofo.data.repository.DressRepository;
 import com.houseofo.data.repository.UserRepository;
+import com.houseofo.exceptions.DressException;
 import com.houseofo.exceptions.SizeException;
 import com.houseofo.exceptions.TypeException;
 import com.houseofo.exceptions.UserException;
@@ -15,6 +17,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 
@@ -36,8 +39,13 @@ class DressServiceImplTest {
     @InjectMocks
     DressServiceImpl dressServiceImpl;
 
+    @Mock
+    ModelMapper modelMapper;
+
     User user;
     User user1;
+
+    Dress dress;
 
 
     @BeforeEach
@@ -45,11 +53,25 @@ class DressServiceImplTest {
 
         user = new User();
         user1 = new User();
+
+        dress = new Dress();
     }
 
     @AfterEach
     void tearDown() {
 
+    }
+
+    @Test
+    void findDressById() throws DressException {
+        //given
+        //when
+        String id = "001";
+        when(dressRepository.findById(anyString())).thenReturn(Optional.of(dress));
+        dressServiceImpl.findById(id);
+
+        //then
+        verify(dressRepository).findById(id);
     }
 
     @Test
@@ -112,4 +134,20 @@ class DressServiceImplTest {
         Size captorValue = dressArgumentCaptor.getValue();
         assertThat(captorValue).isEqualTo(size);
     }
+
+    @Test
+    void deleteDress() throws DressException {
+        //given
+        String dressId = "001";
+
+        //when
+        when(dressRepository.findById(anyString())).thenReturn(Optional.of(dress));
+
+        dressServiceImpl.deleteDress(dressId);
+
+        //then
+        verify(dressRepository).delete(dress);
+
+    }
+
 }

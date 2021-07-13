@@ -21,6 +21,7 @@ class OrderRepositoryTest {
 
     Order order1;
     Order order2;
+    Order order3;
     Address address;
     Address address2;
 
@@ -29,6 +30,7 @@ class OrderRepositoryTest {
     void setUp() {
         order1 = new Order();
         order2 = new Order();
+        order3 = new Order();
         address = new Address();
         address2 = new Address();
     }
@@ -48,7 +50,6 @@ class OrderRepositoryTest {
         address.setState("Lagos");
         address.setCountry("Nigeria");
 
-        order1.setCompleted(true);
         order1.setAddress(address);
         order1.setDateOrdered(orderDate);
 
@@ -61,7 +62,6 @@ class OrderRepositoryTest {
         address2.setState("Lagos");
         address2.setCountry("Nigeria");
 
-        order2.setCompleted(false);
         order2.setAddress(address2);
         order2.setDateOrdered(orderDate2);
 
@@ -76,25 +76,35 @@ class OrderRepositoryTest {
     }
 
     @Test
-    void findOrdersByCompleted() {
-        order1.setCompleted(true);
-        order2.setCompleted(false);
+    void findByOrderStatusCompleted() {
+        order1.setOrderStatus(OrderStatus.COMPLETED);
 
         orderRepository.save(order1);
-        orderRepository.save(order2);
 
-        List<Order> orderList = orderRepository.findOrdersByCompletedTrue();
+        List<Order> orderList = orderRepository.findByOrderStatus(OrderStatus.COMPLETED);
         assertThat(orderList.size()).isEqualTo(1);
-        assertThat(orderList.get(0).isCompleted()).isEqualTo(true);
+        assertThat(orderList.get(0).getOrderStatus()).isEqualTo(OrderStatus.COMPLETED);
     }
 
     @Test
-    void findOrdersByCompletedFalse(){
-        order2.setCompleted(false);
+    void findByOrderStatusInProgress(){
+        order2.setOrderStatus(OrderStatus.IN_PROGRESS);
         orderRepository.save(order2);
 
-        List<Order> orders = orderRepository.findOrdersByCompletedFalse();
+        List<Order> orders = orderRepository.findByOrderStatus(OrderStatus.IN_PROGRESS);
         assertThat(orders.size()).isEqualTo(1);
-        assertThat(orders.get(0).isCompleted()).isEqualTo(false);
+        assertThat(orders.get(0).getOrderStatus()).isEqualTo(OrderStatus.IN_PROGRESS);
     }
+
+    @Test
+    void findByOrderStatusCancelled(){
+        order3.setOrderStatus(OrderStatus.CANCELLED);
+        orderRepository.save(order3);
+        log.info("after saving order ->{}", order3);
+
+        List<Order> orders = orderRepository.findByOrderStatus(OrderStatus.CANCELLED);
+        assertThat(orders.size()).isEqualTo(1);
+        assertThat(orders.get(0).getOrderStatus()).isEqualTo(OrderStatus.CANCELLED);
+    }
+
 }

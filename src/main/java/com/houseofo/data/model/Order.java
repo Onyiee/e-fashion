@@ -17,5 +17,6 @@ public class Order {
     private LocalDate dateOrdered;
     private Map<String, Item> items;
     private Address address;
-    private boolean completed;
+    private OrderStatus orderStatus;
+
 }

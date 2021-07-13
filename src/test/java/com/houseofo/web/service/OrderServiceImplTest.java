@@ -64,11 +64,11 @@ class OrderServiceImplTest {
         orderService.findOrderByDateOrdered(dateOrdered);
         verify(orderRepository).findOrdersByDateOrdered(dateOrdered);;
     }
-
-    @Test
-    void findCompletedOrders() {
-        orderService.findCompletedOrders();
-        verify(orderRepository).findOrdersByCompletedTrue();
-    }
+//
+//    @Test
+//    void findCompletedOrders() {
+//        orderService.findCompletedOrders();
+//        verify(orderRepository).findOrdersByCompletedTrue();
+//    }
 
 }

@@ -8,6 +8,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.math.BigDecimal;
+
 @Data
 @Document
 @AllArgsConstructor
@@ -15,6 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Dress {
     @Id
     private String id;
+    private BigDecimal price;
     private Size size;
     private String image;
     private Type type;

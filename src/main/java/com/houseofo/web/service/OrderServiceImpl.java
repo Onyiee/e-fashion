@@ -2,6 +2,7 @@ package com.houseofo.web.service;
 
 import com.houseofo.data.dtos.OrderDto;
 import com.houseofo.data.model.Order;
+import com.houseofo.data.model.OrderStatus;
 import com.houseofo.data.repository.DressRepository;
 import com.houseofo.data.repository.OrderRepository;
 import com.houseofo.util.UserMapper;
@@ -38,13 +39,24 @@ public class OrderServiceImpl implements OrderService{
         return orderDtos;
     }
 
+
     @Override
     public List<OrderDto> findCompletedOrders() {
-        List<Order> orderList = orderRepository.findOrdersByCompletedTrue();
+        List<Order> orderList = orderRepository.findByOrderStatus(OrderStatus.COMPLETED);
         List<OrderDto> orderDtoList = orderList
                 .stream()
                 .map(order -> modelMapper.map(order,OrderDto.class))
                 .collect(Collectors.toList());
         return orderDtoList;
+    }
+
+    @Override
+    public OrderDto createOrder(OrderDto orderDto) {
+        return null;
+    }
+
+    @Override
+    public void cancelOrder(String id) {
+
     }
 }

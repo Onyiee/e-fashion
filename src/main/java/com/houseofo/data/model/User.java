@@ -21,4 +21,5 @@ public class User {
     private List<Order> orders;
     private List<Address> addresses;
     private String designerBrand;
+    //Todo add user firstname,lastname, username
 }

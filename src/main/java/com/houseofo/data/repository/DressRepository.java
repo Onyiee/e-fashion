@@ -1,5 +1,6 @@
 package com.houseofo.data.repository;
 
+import com.houseofo.data.dtos.DressDto;
 import com.houseofo.data.model.Dress;
 import com.houseofo.data.model.Size;
 import com.houseofo.data.model.Type;
