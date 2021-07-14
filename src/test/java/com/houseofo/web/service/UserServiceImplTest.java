@@ -95,12 +95,14 @@ class UserServiceImplTest {
         String id = "testId";
         user.setId(id);
 
+        //when
         when(userRepository.findById(anyString())).thenReturn(Optional.of(user));
 
         UserDto userDto = new UserDto();
 
         userServiceImpl.updateUser(userDto, id);
 
+        //then
         verify(userRepository).findById(id);
         verify(userRepository).save(user);
     }

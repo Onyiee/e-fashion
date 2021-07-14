@@ -13,7 +13,7 @@ import java.util.List;
 public interface DressService {
     DressDto findById(String id) throws DressException;
 
-    void updateDress(String id, DressDto updateContent);
+    void updateDress(String id, DressDto updateContent) throws DressException;
 
     void deleteDress(String id) throws DressException;
 

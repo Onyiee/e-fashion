@@ -12,6 +12,9 @@ import java.util.List;
 @NoArgsConstructor
 public class UserDto {
     private String id;
+    private String firstName;
+    private String lastName;
+    private String userName;
     private Role role;
     private List<Dress> dresses;
     private Size size;

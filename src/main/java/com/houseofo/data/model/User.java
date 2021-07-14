@@ -14,6 +14,9 @@ import java.util.List;
 public class User {
     @Id
     private String id;
+    private String firstName;
+    private String lastName;
+    private String userName;
     private Role role;
     private List<Dress> dresses;
     private Size size;
@@ -21,5 +24,4 @@ public class User {
     private List<Order> orders;
     private List<Address> addresses;
     private String designerBrand;
-    //Todo add user firstname,lastname, username
 }

@@ -1,6 +1,7 @@
 package com.houseofo.web.service;
 
 import com.houseofo.data.dtos.DressDto;
+import com.houseofo.data.dtos.UserDto;
 import com.houseofo.data.model.*;
 import com.houseofo.data.repository.DressRepository;
 import com.houseofo.data.repository.UserRepository;
@@ -8,6 +9,7 @@ import com.houseofo.exceptions.DressException;
 import com.houseofo.exceptions.SizeException;
 import com.houseofo.exceptions.TypeException;
 import com.houseofo.exceptions.UserException;
+import com.houseofo.util.DressMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,6 +43,9 @@ class DressServiceImplTest {
 
     @Mock
     ModelMapper modelMapper;
+
+    @Mock
+    DressMapper dressMapper;
 
     User user;
     User user1;
@@ -133,6 +138,23 @@ class DressServiceImplTest {
                 .findDressesBySize(dressArgumentCaptor.capture());
         Size captorValue = dressArgumentCaptor.getValue();
         assertThat(captorValue).isEqualTo(size);
+    }
+
+    @Test
+    void updateDress() throws DressException {
+        //given
+        String id = "testId";
+        dress.setId(id);
+
+        //when
+        when(dressRepository.findById(anyString())).thenReturn(Optional.of(dress));
+        DressDto dressDto = new DressDto();
+
+        dressServiceImpl.updateDress(id,dressDto);
+
+        //then
+        verify(dressRepository).findById(id);
+        verify(dressRepository).save(dress);
     }
 
     @Test

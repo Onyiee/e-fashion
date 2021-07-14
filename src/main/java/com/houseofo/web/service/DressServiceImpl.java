@@ -7,6 +7,8 @@ import com.houseofo.exceptions.DressException;
 import com.houseofo.exceptions.SizeException;
 import com.houseofo.exceptions.TypeException;
 import com.houseofo.exceptions.UserException;
+import com.houseofo.util.DressMapper;
+import com.houseofo.util.UserMapper;
 import lombok.extern.slf4j.Slf4j;;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class DressServiceImpl implements DressService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    DressMapper dressMapper;
+
 
     @Override
     public DressDto findById(String id) throws DressException {
@@ -37,8 +42,11 @@ public class DressServiceImpl implements DressService {
     }
 
     @Override
-    public void updateDress(String id, DressDto updateContent) {
-
+    public void updateDress(String id, DressDto updateContent) throws DressException {
+        Dress dress = dressRepository.findById(id)
+                .orElseThrow(()-> new DressException("Id does not match any dress"));
+        dressMapper.updateDressFromDto(updateContent, dress);
+        dressRepository.save(dress);
     }
 
     @Override
