@@ -64,6 +64,20 @@ class DressServiceImplTest {
 
     @AfterEach
     void tearDown() {
+    }
+
+    @Test
+    void dressCanBeAdded(){
+        //given
+        DressDto dto = new DressDto();
+
+        //when
+        dress = modelMapper.map(dto, Dress.class);
+
+        dressServiceImpl.createDress(dto);
+
+        //then
+        verify(dressRepository).save(dress);
 
     }
 

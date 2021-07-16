@@ -11,6 +11,8 @@ import java.util.List;
 
 @Service
 public interface DressService {
+    DressDto createDress(DressDto dressDto);
+
     DressDto findById(String id) throws DressException;
 
     void updateDress(String id, DressDto updateContent) throws DressException;

@@ -1,5 +1,6 @@
 package com.houseofo.data.repository;
 
+import com.houseofo.data.dtos.UserDto;
 import com.houseofo.data.model.Role;
 import com.houseofo.data.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -14,5 +15,7 @@ public interface UserRepository extends MongoRepository<User,String> {
     List<User> findUsersByRole(Role role);
     Optional<User> findUserByDesignerBrand(String designerBrand);
     User findUserById(String userId);
-    //todo find user by firstname lastname username
+    UserDto findUserByFirstName(String firstName);
+    UserDto findUserByLastName(String lastName);
+    UserDto findUserByUserName(String userName);
 }

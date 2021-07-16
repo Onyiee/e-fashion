@@ -1,10 +1,13 @@
 package com.houseofo.web.service;
 
+import com.houseofo.data.dtos.DressDto;
 import com.houseofo.data.dtos.OrderDto;
+import com.houseofo.data.model.Dress;
 import com.houseofo.data.model.Order;
 import com.houseofo.data.model.OrderStatus;
 import com.houseofo.data.repository.DressRepository;
 import com.houseofo.data.repository.OrderRepository;
+import com.houseofo.exceptions.DressException;
 import com.houseofo.util.UserMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,14 @@ public class OrderServiceImpl implements OrderService{
 
 
     @Override
+    public OrderDto findById(String id) throws OrderException {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(()-> new OrderException("Id does not match any order"));
+        OrderDto dto = modelMapper.map(order, OrderDto.class);
+        return dto;
+    }
+
+    @Override
     public List<OrderDto> findOrderByDateOrdered(LocalDate dateOrdered) {
         List<Order> orders = orderRepository.findOrdersByDateOrdered(dateOrdered);
         List<OrderDto> orderDtos = orders.stream()
@@ -52,11 +63,19 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public OrderDto createOrder(OrderDto orderDto) {
-        return null;
+        Order order = modelMapper.map(orderDto, Order.class);
+        orderRepository.save(order);
+        return orderDto;
     }
 
     @Override
-    public void cancelOrder(String id) {
-
+    public void cancelOrder(String id) throws OrderException {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(()-> new OrderException("Id does not match any order"));
+        if (order.getOrderStatus().equals(OrderStatus.COMPLETED)){
+            throw new OrderException("Order cannot be cancelled once completed");
+        }
+        order.setOrderStatus(OrderStatus.CANCELLED);
+        orderRepository.save(order);
     }
 }

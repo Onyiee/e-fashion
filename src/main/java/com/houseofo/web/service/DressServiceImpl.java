@@ -34,6 +34,13 @@ public class DressServiceImpl implements DressService {
 
 
     @Override
+    public DressDto createDress(DressDto dressDto) {
+       Dress newDress = modelMapper.map(dressDto, Dress.class);
+       dressRepository.save(newDress);
+       return dressDto;
+    }
+
+    @Override
     public DressDto findById(String id) throws DressException {
         Dress dress = dressRepository.findById(id)
                 .orElseThrow(()-> new DressException("Id does not match any dress"));

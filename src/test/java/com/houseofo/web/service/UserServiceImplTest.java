@@ -69,7 +69,6 @@ class UserServiceImplTest {
         //then
         log.info("userDto -->{}", userDto);
         verify(userRepository).findById("id");
-
     }
 
     @Test
@@ -131,6 +130,5 @@ class UserServiceImplTest {
 
         assertThat(user1).isEqualTo(user);
         log.info("user is -->{}",user);
-
     }
 }
