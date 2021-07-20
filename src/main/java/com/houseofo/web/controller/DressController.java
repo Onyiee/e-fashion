@@ -2,7 +2,6 @@ package com.houseofo.web.controller;
 
 import com.houseofo.data.dtos.ApiResponse;
 import com.houseofo.data.dtos.DressDto;
-import com.houseofo.data.model.Dress;
 import com.houseofo.exceptions.DressException;
 import com.houseofo.web.service.DressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +41,30 @@ public class DressController {
 
     }
 
+    @PatchMapping("{id}")
+    public ResponseEntity<?> updateDressDetails(@PathVariable String id,@RequestBody DressDto updateContent){
+        try {
+            dressService.updateDress(id, updateContent);
+            ApiResponse response = new ApiResponse(true, "updated successfully");
+            return new ResponseEntity<>(response,HttpStatus.OK);
+        }catch (DressException exception){
+            ApiResponse response = new ApiResponse(false, exception.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteDress(@PathVariable String id){
+        try {
+            dressService.deleteDress(id);
+            ApiResponse apiResponse = new ApiResponse(true, "successfully deleted");
+            return new ResponseEntity<>(apiResponse, HttpStatus.NO_CONTENT);
+        }catch (DressException exception){
+            ApiResponse apiResponse = new ApiResponse(false, exception.getMessage());
+            return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
+        }
+
+    }
 
 }
