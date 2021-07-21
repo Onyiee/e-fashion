@@ -67,7 +67,7 @@ class DressServiceImplTest {
     }
 
     @Test
-    void dressCanBeAdded(){
+    void dressCanBeAdded() throws DressException {
         //given
         DressDto dto = new DressDto();
 

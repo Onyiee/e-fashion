@@ -1,5 +1,7 @@
 package com.houseofo.data.model;
 
+import com.houseofo.util.CascadeSave;
+import com.mongodb.lang.NonNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -25,6 +27,8 @@ public class Dress {
     private String image;
     private Type type;
     @DBRef
+    @CascadeSave
+    @lombok.NonNull
     private User designer;
 
 }

@@ -29,8 +29,8 @@ public class OrderServiceImpl implements OrderService{
     ModelMapper modelMapper;
 
 
-    @Autowired
-    UserMapper mapper;
+//    @Autowired
+//    UserMapper mapper;
 
 
     @Override

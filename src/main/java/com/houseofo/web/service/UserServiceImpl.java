@@ -22,8 +22,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     ModelMapper modelMapper;
 
-    @Autowired
-    UserMapper mapper;
+//    @Autowired
+//    UserMapper mapper;
 
     @Override
     public UserDto findUserById(String id) throws UserException {
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     public void updateUser(UserDto userDto,String id) throws UserException {
         User myUser = userRepository.findById(id)
                 .orElseThrow(()-> new UserException("No matching user ID found."));
-        mapper.updateUserFromDto(userDto, myUser);
+        modelMapper.map(userDto, myUser);
         userRepository.save(myUser);
     }
 
