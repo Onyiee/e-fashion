@@ -41,7 +41,6 @@ public class OrderController {
     @GetMapping("")
     public ResponseEntity<?> getCompletedOrders(){
         List<OrderDto> orderDtos = orderService.findCompletedOrders();
-        log.info("the orders returned are -->{}", orderDtos);
         return new ResponseEntity<>(orderDtos, HttpStatus.OK);
     }
 

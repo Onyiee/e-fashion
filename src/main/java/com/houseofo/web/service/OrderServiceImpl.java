@@ -56,7 +56,6 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public List<OrderDto> findCompletedOrders() {
         List<Order> orderList = orderRepository.findOrdersByOrderStatus(OrderStatus.COMPLETED);
-        log.info("the orders returned are -->{}", orderList);
         List<OrderDto> orderDtoList = orderList
                 .stream()
                 .map(order -> modelMapper.map(order,OrderDto.class))
@@ -70,9 +69,6 @@ public class OrderServiceImpl implements OrderService{
             throw new OrderException("Order already exists");
         }
         Order order = modelMapper.map(orderDto, Order.class);
-        if (orderDto.isCompleted()){
-            order.setOrderStatus(OrderStatus.COMPLETED);
-        }
         orderRepository.save(order);
         return orderDto;
     }

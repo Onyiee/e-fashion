@@ -13,6 +13,5 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends MongoRepository<Order,String> {
     List<Order> findOrdersByDateOrdered(LocalDate dateTime);
-//    List<Order> findByOrderStatus);
     List<Order> findOrdersByOrderStatus(OrderStatus orderStatus);
 }
