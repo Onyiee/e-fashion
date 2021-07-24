@@ -1,4 +1,4 @@
-package com.houseofo.web.service;
+package com.houseofo.exceptions;
 
 public class OrderException extends Exception {
     public OrderException() {

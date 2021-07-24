@@ -56,4 +56,11 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(()-> new UserException("No matching user ID found."));
         userRepository.delete(myUser);
     }
+
+    @Override
+    public User internalFindUserById(String id) throws UserException {
+        User user = userRepository.findById(id)
+                .orElseThrow(()-> new UserException("No user matches the ID passed in."));
+        return modelMapper.map(user, User.class);
+    }
 }

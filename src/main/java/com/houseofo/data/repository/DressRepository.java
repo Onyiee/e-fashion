@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DressRepository extends MongoRepository<Dress,String> {
@@ -16,5 +17,7 @@ public interface DressRepository extends MongoRepository<Dress,String> {
     List<Dress> findDressesBySize(Size size);
     List<Dress> findDressesByType(Type type);
     List<Dress> findAll();
+    Optional<Dress> findDressByDressName(String dressName);
+//    Dress findDressByDressName(String dressName);
 //    List<Dress> findDressesByPriceBetween(BigDecimal startRange, BigDecimal endRange);
 }

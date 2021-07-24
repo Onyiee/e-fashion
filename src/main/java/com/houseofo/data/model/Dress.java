@@ -27,8 +27,7 @@ public class Dress {
     private String image;
     private Type type;
     @DBRef
-    @CascadeSave
-    @lombok.NonNull
     private User designer;
+    private String dressName;
 
 }

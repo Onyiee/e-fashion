@@ -13,4 +13,5 @@ public class DressDto {
     private String image;
     private Type type;
     private User designer;
+    private String dressName;
 }

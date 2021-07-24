@@ -67,14 +67,14 @@ class DressServiceImplTest {
     }
 
     @Test
-    void dressCanBeAdded() throws DressException {
+    void dressCanBeAdded() throws DressException, UserException {
         //given
         DressDto dto = new DressDto();
 
         //when
         dress = modelMapper.map(dto, Dress.class);
 
-        dressServiceImpl.createDress(dto);
+        dressServiceImpl.createDress(dress.getId(), dto);
 
         //then
         verify(dressRepository).save(dress);

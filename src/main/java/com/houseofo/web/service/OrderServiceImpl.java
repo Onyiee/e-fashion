@@ -1,22 +1,23 @@
 package com.houseofo.web.service;
 
-import com.houseofo.data.dtos.DressDto;
 import com.houseofo.data.dtos.OrderDto;
-import com.houseofo.data.model.Dress;
 import com.houseofo.data.model.Order;
 import com.houseofo.data.model.OrderStatus;
+import com.houseofo.data.model.Type;
 import com.houseofo.data.repository.DressRepository;
 import com.houseofo.data.repository.OrderRepository;
-import com.houseofo.exceptions.DressException;
-import com.houseofo.util.UserMapper;
+import com.houseofo.exceptions.OrderException;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Slf4j
 @Service
 public class OrderServiceImpl implements OrderService{
     @Autowired
@@ -27,6 +28,7 @@ public class OrderServiceImpl implements OrderService{
 
     @Autowired
     ModelMapper modelMapper;
+
 
 
 //    @Autowired
@@ -53,7 +55,8 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public List<OrderDto> findCompletedOrders() {
-        List<Order> orderList = orderRepository.findByOrderStatus(OrderStatus.COMPLETED);
+        List<Order> orderList = orderRepository.findOrdersByOrderStatus(OrderStatus.COMPLETED);
+        log.info("the orders returned are -->{}", orderList);
         List<OrderDto> orderDtoList = orderList
                 .stream()
                 .map(order -> modelMapper.map(order,OrderDto.class))
@@ -62,8 +65,14 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public OrderDto createOrder(OrderDto orderDto) {
+    public OrderDto createOrder(OrderDto orderDto) throws OrderException {
+        if (orderRepository.findById(orderDto.getId()).isPresent()){
+            throw new OrderException("Order already exists");
+        }
         Order order = modelMapper.map(orderDto, Order.class);
+        if (orderDto.isCompleted()){
+            order.setOrderStatus(OrderStatus.COMPLETED);
+        }
         orderRepository.save(order);
         return orderDto;
     }

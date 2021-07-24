@@ -81,7 +81,7 @@ class OrderRepositoryTest {
 
         orderRepository.save(order1);
 
-        List<Order> orderList = orderRepository.findByOrderStatus(OrderStatus.COMPLETED);
+        List<Order> orderList = orderRepository.findOrdersByOrderStatus(OrderStatus.COMPLETED);
         assertThat(orderList.size()).isEqualTo(1);
         assertThat(orderList.get(0).getOrderStatus()).isEqualTo(OrderStatus.COMPLETED);
     }
@@ -91,7 +91,7 @@ class OrderRepositoryTest {
         order2.setOrderStatus(OrderStatus.IN_PROGRESS);
         orderRepository.save(order2);
 
-        List<Order> orders = orderRepository.findByOrderStatus(OrderStatus.IN_PROGRESS);
+        List<Order> orders = orderRepository.findOrdersByOrderStatus(OrderStatus.IN_PROGRESS);
         assertThat(orders.size()).isEqualTo(1);
         assertThat(orders.get(0).getOrderStatus()).isEqualTo(OrderStatus.IN_PROGRESS);
     }
@@ -102,7 +102,7 @@ class OrderRepositoryTest {
         orderRepository.save(order3);
         log.info("after saving order ->{}", order3);
 
-        List<Order> orders = orderRepository.findByOrderStatus(OrderStatus.CANCELLED);
+        List<Order> orders = orderRepository.findOrdersByOrderStatus(OrderStatus.CANCELLED);
         assertThat(orders.size()).isEqualTo(1);
         assertThat(orders.get(0).getOrderStatus()).isEqualTo(OrderStatus.CANCELLED);
     }

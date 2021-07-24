@@ -27,14 +27,14 @@ public class DressController {
         return new ResponseEntity<>(dressDtos, HttpStatus.OK);
     }
 
-    @PostMapping("")
-    public ResponseEntity<?> createADress(@RequestBody DressDto dto){
+    @PostMapping("{designerId}")
+    public ResponseEntity<?> createADress(@PathVariable String designerId, @RequestBody DressDto dto){
         log.info("the posted dress is -->{}",dto);
         try {
-            DressDto dressDto = dressService.createDress(dto);
+            DressDto dressDto = dressService.createDress(designerId, dto);
             return new ResponseEntity<>(dressDto, HttpStatus.CREATED);
-        }catch (DressException dressException){
-            ApiResponse response = new ApiResponse(false, dressException.getMessage());
+        }catch (DressException | UserException exception){
+            ApiResponse response = new ApiResponse(false, exception.getMessage());
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
 
@@ -44,7 +44,6 @@ public class DressController {
     public ResponseEntity<?> getDressById(@PathVariable String id){
       try {
           DressDto dressDto = dressService.findById(id);
-
           return new ResponseEntity<>(dressDto, HttpStatus.OK);
       }catch (DressException e){
           ApiResponse apiResponse = new ApiResponse(false, e.getMessage());

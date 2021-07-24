@@ -1,9 +1,9 @@
 package com.houseofo.web.service;
 
-import com.houseofo.data.dtos.DressDto;
 import com.houseofo.data.dtos.OrderDto;
 import com.houseofo.data.model.*;
 import com.houseofo.data.repository.OrderRepository;
+import com.houseofo.exceptions.OrderException;
 import com.houseofo.util.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
@@ -13,18 +13,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -72,11 +66,11 @@ class OrderServiceImplTest {
     @Test
     void findCompletedOrders() {
         orderService.findCompletedOrders();
-        verify(orderRepository).findByOrderStatus(OrderStatus.COMPLETED);
+        verify(orderRepository).findOrdersByOrderStatus(OrderStatus.COMPLETED);
     }
 
     @Test
-    void createOrder(){
+    void createOrder() throws OrderException {
         //given
         OrderDto orderDto = new OrderDto();
         //when

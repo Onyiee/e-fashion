@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 @Data
 @Document
+
 public class Order {
     @Id
     private String id;

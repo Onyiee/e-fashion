@@ -7,7 +7,6 @@ import com.houseofo.exceptions.DressException;
 import com.houseofo.exceptions.SizeException;
 import com.houseofo.exceptions.TypeException;
 import com.houseofo.exceptions.UserException;
-import com.houseofo.util.DressMapper;
 import lombok.extern.slf4j.Slf4j;;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +27,19 @@ public class DressServiceImpl implements DressService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    UserService userService;
+
 //    @Autowired
 //    DressMapper dressMapper;
 
 
     @Override
-    public DressDto createDress(DressDto dressDto) throws DressException {
+    public DressDto createDress(String designerId,DressDto dressDto) throws DressException, UserException {
        Dress newDress = modelMapper.map(dressDto, Dress.class);
-
-       if (dressRepository.findById(newDress.getId()).isPresent()){
+       User designer = userService.internalFindUserById(designerId);
+       newDress.setDesigner(designer);
+       if (dressRepository.findDressByDressName(newDress.getDressName()).isPresent()){
            throw new DressException("Dress already exists.");
        }
        dressRepository.save(newDress);
@@ -56,7 +59,7 @@ public class DressServiceImpl implements DressService {
     public void updateDress(String id, DressDto updateContent) throws DressException {
         Dress dress = dressRepository.findById(id)
                 .orElseThrow(()-> new DressException("Id does not match any dress"));
-        modelMapper.map(dress,updateContent);
+        modelMapper.map(updateContent, dress);
 //        dressMapper.updateDressFromDto(updateContent, dress);
         dressRepository.save(dress);
     }
@@ -81,10 +84,8 @@ public class DressServiceImpl implements DressService {
 
     @Override
     public List<DressDto> findDressByDesigner(String designerBrand) throws UserException {
-        log.info("Id got here2-->{}",designerBrand);
         User user = userRepository.findUserByDesignerBrand(designerBrand)
                 .orElseThrow(()-> new UserException("No matching designer found."));
-        log.info("Id got here3-->{}",designerBrand);
                 {
             List<Dress> dressesByDesigner = dressRepository.findDressesByDesigner(user);
             List<DressDto> dressDtos = dressesByDesigner
