@@ -1,7 +1,6 @@
 package com.houseofo.web.service;
 
 import com.houseofo.data.dtos.DressDto;
-import com.houseofo.data.dtos.UserDto;
 import com.houseofo.data.model.*;
 import com.houseofo.data.repository.DressRepository;
 import com.houseofo.data.repository.UserRepository;

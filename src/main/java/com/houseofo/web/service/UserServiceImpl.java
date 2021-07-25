@@ -1,13 +1,10 @@
 package com.houseofo.web.service;
 
 import com.houseofo.data.dtos.UserDto;
-import com.houseofo.data.model.Order;
 import com.houseofo.data.model.Role;
 import com.houseofo.data.model.User;
 import com.houseofo.data.repository.UserRepository;
-import com.houseofo.exceptions.OrderException;
 import com.houseofo.exceptions.UserException;
-import com.houseofo.util.UserMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,8 +21,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     ModelMapper modelMapper;
 
-//    @Autowired
-//    UserMapper mapper;
 
     @Override
     public UserDto createUser(UserDto userDto) throws UserException {

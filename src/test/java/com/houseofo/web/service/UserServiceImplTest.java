@@ -32,13 +32,6 @@ class UserServiceImplTest {
     @Mock
     UserRepository userRepository;
 
-    @Mock
-    ModelMapper modelMapper;
-
-    @Mock
-    UserMapper userMapper;
-
-
     @InjectMocks
     UserServiceImpl userServiceImpl;
 

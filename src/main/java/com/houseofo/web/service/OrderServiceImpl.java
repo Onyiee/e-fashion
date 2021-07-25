@@ -3,7 +3,6 @@ package com.houseofo.web.service;
 import com.houseofo.data.dtos.OrderDto;
 import com.houseofo.data.model.Order;
 import com.houseofo.data.model.OrderStatus;
-import com.houseofo.data.model.Type;
 import com.houseofo.data.repository.DressRepository;
 import com.houseofo.data.repository.OrderRepository;
 import com.houseofo.exceptions.OrderException;
@@ -11,10 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 @Slf4j

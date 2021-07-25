@@ -1,13 +1,10 @@
 package com.houseofo.web.controller;
 
 import com.houseofo.data.dtos.ApiResponse;
-import com.houseofo.data.dtos.DressDto;
 import com.houseofo.data.dtos.UserDto;
 import com.houseofo.data.model.Role;
-import com.houseofo.exceptions.DressException;
 import com.houseofo.exceptions.UserException;
 import com.houseofo.web.service.UserService;
-import org.apache.catalina.LifecycleState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -34,9 +34,6 @@ class OrderServiceImplTest {
     @Mock
     ModelMapper modelMapper;
 
-    @Mock
-    UserMapper userMapper;
-
     @InjectMocks
     OrderServiceImpl orderService;
 
