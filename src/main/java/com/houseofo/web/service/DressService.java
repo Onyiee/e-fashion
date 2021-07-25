@@ -12,19 +12,12 @@ import java.util.List;
 @Service
 public interface DressService {
     DressDto createDress(String designerId,DressDto dressDto) throws DressException, UserException;
-
     DressDto findById(String id) throws DressException;
-
     void updateDress(String id, DressDto updateContent) throws DressException;
-
     void deleteDress(String id) throws DressException;
-
     List<DressDto> findAllDresses();
-
     List<DressDto> findDressByDesigner(String designerBrand) throws UserException;
-
     List<DressDto> findDressByType(String typeName) throws TypeException;
-
     List<DressDto> findDressBySize(String size) throws SizeException;
 
 }
