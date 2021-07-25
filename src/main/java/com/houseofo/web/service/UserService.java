@@ -12,6 +12,7 @@ import java.util.List;
 @Service
 
 public interface UserService {
+    UserDto createUser(UserDto userDto) throws UserException;
     UserDto findUserById(String id) throws UserException;
     List<UserDto> findUserByRole(Role role);
     void updateUser(UserDto userDto, String id) throws UserException;

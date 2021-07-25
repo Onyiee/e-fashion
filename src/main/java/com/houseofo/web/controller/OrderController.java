@@ -63,7 +63,7 @@ public class OrderController {
             return new ResponseEntity<>(apiResponse, HttpStatus.OK);
         }catch (OrderException exception){
             ApiResponse apiResponse = new ApiResponse(false, "Order cannot be cancelled.");
-            return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(apiResponse, HttpStatus.NO_CONTENT);
         }
     }
 }
