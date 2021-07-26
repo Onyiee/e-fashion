@@ -9,4 +9,5 @@ public class Item {
     private Dress dress;
     private int quantity;
     private BigDecimal totalPrice;
+
 }

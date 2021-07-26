@@ -8,9 +8,14 @@ import com.houseofo.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -19,7 +24,7 @@ public class UserController {
     UserService userService;
 
     @PostMapping("")
-    public ResponseEntity<?>  createUser (@RequestBody UserDto dto){
+    public ResponseEntity<?>  createUser (@RequestBody @Valid UserDto dto){
         try {
             UserDto userDto = userService.createUser(dto);
             return new ResponseEntity<>(userDto, HttpStatus.CREATED);
@@ -47,7 +52,7 @@ public class UserController {
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<?> updateUser(@RequestBody UserDto userDto,@PathVariable String id){
+    public ResponseEntity<?> updateUser(@RequestBody @Valid  UserDto userDto,@PathVariable String id){
         try {
             userService.updateUser(userDto, id);
             ApiResponse response = new ApiResponse(true, "Updated successfully");
@@ -68,5 +73,17 @@ public class UserController {
          ApiResponse response = new ApiResponse(false, userException.getMessage());
          return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
      }
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException exception){
+        Map<String, String> errors = new HashMap<>();
+        exception.getBindingResult().getAllErrors().forEach(error -> {
+            String field = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(field, errorMessage);
+        });
+        return errors;
     }
 }

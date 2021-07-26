@@ -3,8 +3,10 @@ package com.houseofo.web.service;
 import com.houseofo.data.dtos.OrderDto;
 import com.houseofo.data.model.Order;
 import com.houseofo.data.model.OrderStatus;
+import com.houseofo.data.model.User;
 import com.houseofo.data.repository.DressRepository;
 import com.houseofo.data.repository.OrderRepository;
+import com.houseofo.data.repository.UserRepository;
 import com.houseofo.exceptions.OrderException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -24,6 +26,9 @@ public class OrderServiceImpl implements OrderService{
 
     @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    UserRepository userRepository;
 
 
 
@@ -65,6 +70,9 @@ public class OrderServiceImpl implements OrderService{
             throw new OrderException("Order already exists");
         }
         Order order = modelMapper.map(orderDto, Order.class);
+        User user = userRepository.findUserById(orderDto.getUserId());
+        order.setUser(user);
+        order.setDateOrdered(LocalDate.now());
         orderRepository.save(order);
         return orderDto;
     }
@@ -78,5 +86,10 @@ public class OrderServiceImpl implements OrderService{
         }
         order.setOrderStatus(OrderStatus.CANCELLED);
         orderRepository.save(order);
+    }
+
+    @Override
+    public Order saveOrder(Order order) {
+        return orderRepository.save(order);
     }
 }

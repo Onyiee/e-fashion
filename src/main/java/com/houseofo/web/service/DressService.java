@@ -1,6 +1,7 @@
 package com.houseofo.web.service;
 
 import com.houseofo.data.dtos.DressDto;
+import com.houseofo.data.dtos.DressOrderRequest;
 import com.houseofo.exceptions.DressException;
 import com.houseofo.exceptions.SizeException;
 import com.houseofo.exceptions.TypeException;
@@ -19,5 +20,5 @@ public interface DressService {
     List<DressDto> findDressByDesigner(String designerBrand) throws UserException;
     List<DressDto> findDressByType(String typeName) throws TypeException;
     List<DressDto> findDressBySize(String size) throws SizeException;
-
+    void buyDress(DressOrderRequest request) throws DressException, UserException;
 }

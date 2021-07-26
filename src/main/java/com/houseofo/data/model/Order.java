@@ -3,6 +3,7 @@ package com.houseofo.data.model;
 import lombok.Data;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
@@ -20,5 +21,7 @@ public class Order {
     private Map<String, Item> items = new HashMap<>();
     private Address address;
     private OrderStatus orderStatus = OrderStatus.IN_PROGRESS;
+    @DBRef
+    private User user;
 
 }

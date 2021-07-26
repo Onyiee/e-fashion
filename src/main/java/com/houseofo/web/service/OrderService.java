@@ -1,6 +1,7 @@
 package com.houseofo.web.service;
 
 import com.houseofo.data.dtos.OrderDto;
+import com.houseofo.data.model.Order;
 import com.houseofo.exceptions.OrderException;
 import org.springframework.stereotype.Service;
 
@@ -13,4 +14,5 @@ public interface OrderService {
     List<OrderDto> findCompletedOrders();
     OrderDto createOrder(OrderDto orderDto) throws OrderException;
     void cancelOrder(String id) throws OrderException;
+    Order saveOrder(Order order);
 }
