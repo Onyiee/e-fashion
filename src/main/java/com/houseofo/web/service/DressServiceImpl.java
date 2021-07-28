@@ -76,6 +76,10 @@ public class DressServiceImpl implements DressService {
     public void deleteDress(String id) throws DressException {
         Dress dress = dressRepository.findById(id)
                 .orElseThrow(() -> new DressException("Id does not match any dress"));
+        String designerId = dress.getDesigner().getId();
+        User designer = userRepository.findUserById(designerId);
+        designer.getDresses().remove(dress);
+        userRepository.save(designer);
         dressRepository.delete(dress);
     }
 
@@ -156,6 +160,7 @@ public class DressServiceImpl implements DressService {
             item.setTotalPrice(dressPrice.multiply(quantity));
             order.getItems().put(dressId, item);
         }
+        order.setDateOrdered(LocalDate.now());
         orderService.saveOrder(order);
     }
 

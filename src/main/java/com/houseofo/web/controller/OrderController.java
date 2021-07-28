@@ -1,6 +1,7 @@
 package com.houseofo.web.controller;
 
 import com.houseofo.data.dtos.ApiResponse;
+import com.houseofo.data.dtos.DressDto;
 import com.houseofo.data.dtos.OrderDto;
 import com.houseofo.exceptions.OrderException;
 import com.houseofo.web.service.OrderService;
@@ -26,6 +27,12 @@ public class OrderController {
 
     @Autowired
     OrderService orderService;
+
+    @GetMapping("")
+    public ResponseEntity<?> getAllOrders() {
+        List<OrderDto> orderDtos = orderService.findAllOrders();
+        return new ResponseEntity<>(orderDtos, HttpStatus.OK);
+    }
 
     @GetMapping("byId/{id}")
     public ResponseEntity<?> getOrderById(@PathVariable String id){

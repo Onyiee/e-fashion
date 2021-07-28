@@ -21,4 +21,5 @@ public interface DressService {
     List<DressDto> findDressByType(String typeName) throws TypeException;
     List<DressDto> findDressBySize(String size) throws SizeException;
     void buyDress(DressOrderRequest request) throws DressException, UserException;
+
 }

@@ -1,6 +1,8 @@
 package com.houseofo.web.service;
 
+import com.houseofo.data.dtos.DressDto;
 import com.houseofo.data.dtos.OrderDto;
+import com.houseofo.data.model.Dress;
 import com.houseofo.data.model.Order;
 import com.houseofo.data.model.OrderStatus;
 import com.houseofo.data.model.User;
@@ -12,12 +14,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Slf4j
 @Service
-public class OrderServiceImpl implements OrderService{
+public class OrderServiceImpl implements OrderService {
     @Autowired
     OrderRepository orderRepository;
 
@@ -31,7 +35,6 @@ public class OrderServiceImpl implements OrderService{
     UserRepository userRepository;
 
 
-
 //    @Autowired
 //    UserMapper mapper;
 
@@ -39,7 +42,7 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public OrderDto findById(String id) throws OrderException {
         Order order = orderRepository.findById(id)
-                .orElseThrow(()-> new OrderException("Id does not match any order"));
+                .orElseThrow(() -> new OrderException("Id does not match any order"));
         OrderDto dto = modelMapper.map(order, OrderDto.class);
         return dto;
     }
@@ -48,7 +51,7 @@ public class OrderServiceImpl implements OrderService{
     public List<OrderDto> findOrderByDateOrdered(LocalDate dateOrdered) {
         List<Order> orders = orderRepository.findOrdersByDateOrdered(dateOrdered);
         List<OrderDto> orderDtos = orders.stream()
-                .map(order -> modelMapper.map(order,OrderDto.class))
+                .map(order -> modelMapper.map(order, OrderDto.class))
                 .collect(Collectors.toList());
         return orderDtos;
     }
@@ -59,14 +62,14 @@ public class OrderServiceImpl implements OrderService{
         List<Order> orderList = orderRepository.findOrdersByOrderStatus(OrderStatus.COMPLETED);
         List<OrderDto> orderDtoList = orderList
                 .stream()
-                .map(order -> modelMapper.map(order,OrderDto.class))
+                .map(order -> modelMapper.map(order, OrderDto.class))
                 .collect(Collectors.toList());
         return orderDtoList;
     }
 
     @Override
     public OrderDto createOrder(OrderDto orderDto) throws OrderException {
-        if (orderRepository.findById(orderDto.getId()).isPresent()){
+        if (orderRepository.findById(orderDto.getId()).isPresent()) {
             throw new OrderException("Order already exists");
         }
         Order order = modelMapper.map(orderDto, Order.class);
@@ -80,8 +83,8 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public void cancelOrder(String id) throws OrderException {
         Order order = orderRepository.findById(id)
-                .orElseThrow(()-> new OrderException("Id does not match any order"));
-        if (order.getOrderStatus().equals(OrderStatus.COMPLETED)){
+                .orElseThrow(() -> new OrderException("Id does not match any order"));
+        if (order.getOrderStatus().equals(OrderStatus.COMPLETED)) {
             throw new OrderException("Order cannot be cancelled once completed");
         }
         order.setOrderStatus(OrderStatus.CANCELLED);
@@ -92,4 +95,15 @@ public class OrderServiceImpl implements OrderService{
     public Order saveOrder(Order order) {
         return orderRepository.save(order);
     }
+
+    @Override
+    public List<OrderDto> findAllOrders() {
+        List<Order> orders = orderRepository.findAll();
+        List<OrderDto> orderDtos = orders
+                .stream().map(order -> modelMapper.map(
+                        order, OrderDto.class
+                )).collect(Collectors.toList());
+        return orderDtos;
+    }
 }
+

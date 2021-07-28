@@ -36,7 +36,6 @@ public class DressController {
 
     @PostMapping("{designerId}")
     public ResponseEntity<?> createADress(@PathVariable String designerId, @RequestBody @Valid DressDto dto) {
-        log.info("the posted dress is -->{}", dto);
         try {
             DressDto dressDto = dressService.createDress(designerId, dto);
             return new ResponseEntity<>(dressDto, HttpStatus.CREATED);
@@ -44,7 +43,6 @@ public class DressController {
             ApiResponse response = new ApiResponse(false, exception.getMessage());
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
-
     }
 
     @GetMapping("{id}")

@@ -77,7 +77,6 @@ class DressServiceImplTest {
 
         //then
         verify(dressRepository).save(dress);
-        dress.getDesigner().getDresses().add(dress2);
 
     }
 

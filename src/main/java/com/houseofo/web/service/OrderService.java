@@ -15,4 +15,5 @@ public interface OrderService {
     OrderDto createOrder(OrderDto orderDto) throws OrderException;
     void cancelOrder(String id) throws OrderException;
     Order saveOrder(Order order);
+    List<OrderDto> findAllOrders();
 }

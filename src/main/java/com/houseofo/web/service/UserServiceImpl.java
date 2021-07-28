@@ -25,25 +25,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto createUser(UserDto userDto) throws UserException {
         String username = userDto.getUserName();
-        if (userRepository.findUserByUserName(username).isPresent()){
+        if (userRepository.findUserByUserName(username).isPresent()) {
             throw new UserException("user already exists.");
         }
+        String brand = userDto.getDesignerBrand();
+        if (userRepository.findUserByDesignerBrand(brand).isPresent()) {
+
+            throw new UserException("user already exists with brand " + brand);
+        }
         User user = modelMapper.map(userDto, User.class);
-       User savedUser = userRepository.save(user);
-       //todo address issue fix
+        User savedUser = userRepository.save(user);
+        //todo address issue fix
         return modelMapper.map(savedUser, UserDto.class);
     }
 
     @Override
     public UserDto findUserById(String id) throws UserException {
         User user = userRepository.findById(id)
-                .orElseThrow(()-> new UserException("No user matches the ID passed in."));
+                .orElseThrow(() -> new UserException("No user matches the ID passed in."));
         UserDto userDto = modelMapper.map(user, UserDto.class);
         return userDto;
     }
 
     @Override
-    public List <UserDto> findUserByRole(Role role) {
+    public List<UserDto> findUserByRole(Role role) {
         List<User> users = userRepository.findUsersByRole(role);
         List<UserDto> userDtos = users.stream()
                 .map(user -> modelMapper.map(user, UserDto.class))
@@ -52,9 +57,9 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public void updateUser(UserDto userDto,String id) throws UserException {
+    public void updateUser(UserDto userDto, String id) throws UserException {
         User myUser = userRepository.findById(id)
-                .orElseThrow(()-> new UserException("No matching user ID found."));
+                .orElseThrow(() -> new UserException("No matching user ID found."));
         modelMapper.map(userDto, myUser);
         userRepository.save(myUser);
     }
@@ -62,14 +67,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(String id) throws UserException {
         User myUser = userRepository.findById(id)
-                .orElseThrow(()-> new UserException("No matching user ID found."));
+                .orElseThrow(() -> new UserException("No matching user ID found."));
         userRepository.delete(myUser);
     }
 
     @Override
     public User internalFindUserById(String id) throws UserException {
         User user = userRepository.findById(id)
-                .orElseThrow(()-> new UserException("No user matches the ID passed in."));
+                .orElseThrow(() -> new UserException("No user matches the ID passed in."));
         return modelMapper.map(user, User.class);
     }
 }
