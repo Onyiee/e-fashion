@@ -8,7 +8,6 @@ import com.houseofo.exceptions.DressException;
 import com.houseofo.exceptions.SizeException;
 import com.houseofo.exceptions.TypeException;
 import com.houseofo.exceptions.UserException;
-import com.houseofo.util.DressMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @Service
@@ -43,13 +43,11 @@ class DressServiceImplTest {
     @Mock
     ModelMapper modelMapper;
 
-    @Mock
-    DressMapper dressMapper;
-
     User user;
     User user1;
 
     Dress dress;
+    Dress dress2;
 
 
     @BeforeEach
@@ -59,6 +57,8 @@ class DressServiceImplTest {
         user1 = new User();
 
         dress = new Dress();
+        dress2 = new Dress();
+
     }
 
     @AfterEach
@@ -77,6 +77,7 @@ class DressServiceImplTest {
 
         //then
         verify(dressRepository).save(dress);
+        dress.getDesigner().getDresses().add(dress2);
 
     }
 
@@ -182,6 +183,13 @@ class DressServiceImplTest {
 
         //then
         verify(dressRepository).delete(dress);
+
+    }
+
+    @Test
+    void testForExceptions(){
+        assertThatThrownBy(()-> dressServiceImpl
+                .findDressByDesigner("cherryBerry")).hasMessageContaining("No matching designer found.");
 
     }
 

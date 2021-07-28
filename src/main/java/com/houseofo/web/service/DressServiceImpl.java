@@ -42,7 +42,6 @@ public class DressServiceImpl implements DressService {
 
     @Override
     public DressDto createDress(String designerId, DressDto dressDto) throws DressException, UserException {
-        //todo add new dress to list of dresses on designer model;
         Dress newDress = modelMapper.map(dressDto, Dress.class);
         User designer = userService.internalFindUserById(designerId);
         newDress.setDesigner(designer);
@@ -50,6 +49,8 @@ public class DressServiceImpl implements DressService {
             throw new DressException("Dress already exists.");
         }
         Dress dress = dressRepository.save(newDress);
+        designer.getDresses().add(dress);
+        userRepository.save(designer);
         return modelMapper.map(dress, DressDto.class);
     }
 

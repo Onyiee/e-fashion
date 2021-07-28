@@ -50,16 +50,6 @@ public class OrderController {
         return new ResponseEntity<>(orderDtos, HttpStatus.OK);
     }
 
-    @PostMapping("")
-    public ResponseEntity<?> createOrder(@RequestBody @Valid OrderDto dto){
-        try {
-            OrderDto orderDto = orderService.createOrder(dto);
-            return new ResponseEntity<>(orderDto, HttpStatus.OK);
-        }catch (OrderException exception){
-            ApiResponse response = new ApiResponse(false, "Order already exists. Create another.");
-            return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
-        }
-    }
 
     @DeleteMapping("{id}")
     public ResponseEntity<?> cancelOrder(@PathVariable String id){
