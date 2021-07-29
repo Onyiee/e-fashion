@@ -23,6 +23,12 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @GetMapping("")
+    public ResponseEntity<?> getAllUsers() {
+        List<UserDto> userDtoList = userService.findAllUsers();
+        return new ResponseEntity<>(userDtoList, HttpStatus.OK);
+    }
+
     @PostMapping("")
     public ResponseEntity<?>  createUser (@RequestBody @Valid UserDto dto){
         try {

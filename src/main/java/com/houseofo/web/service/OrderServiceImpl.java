@@ -1,8 +1,5 @@
 package com.houseofo.web.service;
-
-import com.houseofo.data.dtos.DressDto;
 import com.houseofo.data.dtos.OrderDto;
-import com.houseofo.data.model.Dress;
 import com.houseofo.data.model.Order;
 import com.houseofo.data.model.OrderStatus;
 import com.houseofo.data.model.User;
@@ -33,10 +30,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     UserRepository userRepository;
-
-
-//    @Autowired
-//    UserMapper mapper;
 
 
     @Override

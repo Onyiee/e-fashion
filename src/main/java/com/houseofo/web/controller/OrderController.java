@@ -1,7 +1,6 @@
 package com.houseofo.web.controller;
 
 import com.houseofo.data.dtos.ApiResponse;
-import com.houseofo.data.dtos.DressDto;
 import com.houseofo.data.dtos.OrderDto;
 import com.houseofo.exceptions.OrderException;
 import com.houseofo.web.service.OrderService;
@@ -13,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +29,7 @@ public class OrderController {
     public ResponseEntity<?> getAllOrders() {
         List<OrderDto> orderDtos = orderService.findAllOrders();
         return new ResponseEntity<>(orderDtos, HttpStatus.OK);
+        //todo fix the path to get all orders and get completed orders
     }
 
     @GetMapping("byId/{id}")
@@ -51,7 +49,7 @@ public class OrderController {
             return new ResponseEntity<>(orderDtos, HttpStatus.OK);
     }
 
-    @GetMapping("")
+    @GetMapping("/complete")
     public ResponseEntity<?> getCompletedOrders(){
         List<OrderDto> orderDtos = orderService.findCompletedOrders();
         return new ResponseEntity<>(orderDtos, HttpStatus.OK);

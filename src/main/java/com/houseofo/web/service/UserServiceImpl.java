@@ -1,7 +1,9 @@
 package com.houseofo.web.service;
 
+import com.houseofo.data.dtos.OrderDto;
 import com.houseofo.data.dtos.UserDto;
 
+import com.houseofo.data.model.Order;
 import com.houseofo.data.model.Role;
 import com.houseofo.data.model.User;
 import com.houseofo.data.repository.UserRepository;
@@ -76,5 +78,15 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserException("No user matches the ID passed in."));
         return modelMapper.map(user, User.class);
+    }
+
+    @Override
+    public List<UserDto> findAllUsers() {
+        List<User> userList = userRepository.findAll();
+        List<UserDto> userDtos = userList
+                .stream().map(user -> modelMapper.map(
+                        user, UserDto.class
+                )).collect(Collectors.toList());
+        return userDtos;
     }
 }

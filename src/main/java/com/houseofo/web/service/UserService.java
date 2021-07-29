@@ -1,6 +1,7 @@
 package com.houseofo.web.service;
 
 
+import com.houseofo.data.dtos.OrderDto;
 import com.houseofo.data.dtos.UserDto;
 import com.houseofo.data.model.Role;
 import com.houseofo.data.model.User;
@@ -18,4 +19,6 @@ public interface UserService {
     void updateUser(UserDto userDto, String id) throws UserException;
     void deleteUser(String id) throws UserException;
     User internalFindUserById(String id) throws UserException;
+    List<UserDto> findAllUsers();
+    //todo add findAll method here, impl and controller
 }
