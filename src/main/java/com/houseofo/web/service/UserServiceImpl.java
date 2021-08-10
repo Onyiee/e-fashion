@@ -1,27 +1,33 @@
 package com.houseofo.web.service;
 
-import com.houseofo.data.dtos.OrderDto;
 import com.houseofo.data.dtos.UserDto;
 
-import com.houseofo.data.model.Order;
 import com.houseofo.data.model.Role;
 import com.houseofo.data.model.User;
 import com.houseofo.data.repository.UserRepository;
 import com.houseofo.exceptions.UserException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service
-public class UserServiceImpl implements UserService {
+@Service("userService")
+public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     UserRepository userRepository;
 
     @Autowired
     ModelMapper modelMapper;
+
+
 
 
     @Override
@@ -89,4 +95,28 @@ public class UserServiceImpl implements UserService {
                 )).collect(Collectors.toList());
         return userDtos;
     }
+
+    @Override
+    public Optional<UserDto> findUserByName(String userName) throws UserException {
+//        User user = userRepository.findUserByUserName(userName)
+//                .orElseThrow(() -> new UserException("No user matches the name passed in."));
+//
+//        UserDto userDto = modelMapper.map(user, UserDto.class);
+//        return userDto;
+        Optional<User> userOptional = Optional.ofNullable(userRepository.findUserByUserName(userName)
+                .orElseThrow(() -> new UserException("No user matches the name passed in.")));
+        Optional<UserDto> userDto = modelMapper.map(userOptional, (Type) UserDto.class);
+        return userDto;
+    }
+
+
+    @Override
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+        return userRepository
+                  .findUserByUserName(userName)
+                .orElseThrow(()->new UsernameNotFoundException(String.format("Username %s not found",userName)));
+    }
+
+
+
 }

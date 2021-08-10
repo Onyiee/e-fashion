@@ -9,8 +9,8 @@ import com.houseofo.exceptions.UserException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
-@Service
 
 public interface UserService {
     UserDto createUser(UserDto userDto) throws UserException;
@@ -20,5 +20,6 @@ public interface UserService {
     void deleteUser(String id) throws UserException;
     User internalFindUserById(String id) throws UserException;
     List<UserDto> findAllUsers();
+    Optional<UserDto>  findUserByName(String userName) throws UserException;
     //todo add findAll method here, impl and controller
 }

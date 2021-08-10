@@ -8,6 +8,7 @@ import com.houseofo.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -24,12 +25,14 @@ public class UserController {
     UserService userService;
 
     @GetMapping("")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER')")
     public ResponseEntity<?> getAllUsers() {
         List<UserDto> userDtoList = userService.findAllUsers();
         return new ResponseEntity<>(userDtoList, HttpStatus.OK);
     }
 
     @PostMapping("")
+    @PreAuthorize("hasAnyAuthority('user:write')")
     public ResponseEntity<?>  createUser (@RequestBody @Valid UserDto dto){
         try {
             UserDto userDto = userService.createUser(dto);
@@ -41,6 +44,7 @@ public class UserController {
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER')")
     public ResponseEntity<?> getUserById(@PathVariable String id){
         try {
             UserDto userDto = userService.findUserById(id);
@@ -52,12 +56,14 @@ public class UserController {
     }
 
     @GetMapping("userRole/{role}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER')")
     public ResponseEntity<?> getUserByRole(@PathVariable Role role){
         List<UserDto> userDtos = userService.findUserByRole(role);
         return new ResponseEntity<>(userDtos, HttpStatus.OK);
     }
 
     @PatchMapping("{id}")
+    @PreAuthorize("hasAnyAuthority('user:write')")
     public ResponseEntity<?> updateUser(@RequestBody @Valid  UserDto userDto,@PathVariable String id){
         try {
             userService.updateUser(userDto, id);
@@ -70,6 +76,7 @@ public class UserController {
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAnyAuthority('user:write')")
     public ResponseEntity<?> deleteUser(@PathVariable String id){
      try {
          userService.deleteUser(id);

@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -24,16 +25,20 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/dress")
 public class DressController {
+    //hasRole('ROLE_') hasAnyRole('ROLE_') hasAuthority('permission') hasAnyPermission('permission')
+
     @Autowired
     private DressService dressService;
 
     @GetMapping("")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER')")
     public ResponseEntity<?> getAllDresses() {
         List<DressDto> dressDtos = dressService.findAllDresses();
         return new ResponseEntity<>(dressDtos, HttpStatus.OK);
     }
 
     @PostMapping("{designerId}")
+    @PreAuthorize("hasAnyAuthority('user:write')")
     public ResponseEntity<?> createADress(@PathVariable String designerId, @RequestBody @Valid DressDto dto) {
         try {
             DressDto dressDto = dressService.createDress(designerId, dto);
@@ -45,6 +50,7 @@ public class DressController {
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER')")
     public ResponseEntity<?> getDressById(@PathVariable String id) {
         try {
             DressDto dressDto = dressService.findById(id);
@@ -56,6 +62,7 @@ public class DressController {
     }
 
     @PatchMapping("{id}")
+    @PreAuthorize("hasAnyAuthority('user:write')")
     public ResponseEntity<?> updateDressDetails(@PathVariable String id, @RequestBody @Valid DressDto updateContent) {
         try {
             log.info("the dress updated is first in  -->{}", dressService.findById(id));
@@ -70,6 +77,7 @@ public class DressController {
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAnyAuthority('user:write')")
     public ResponseEntity<?> deleteDress(@PathVariable String id) {
         try {
             dressService.deleteDress(id);
@@ -82,6 +90,7 @@ public class DressController {
     }
 
     @GetMapping("userName/{designerBrand}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER')")
     public ResponseEntity<?> getDressByDesigner(@PathVariable String designerBrand) {
         try {
             log.info("Id got here-->{}", designerBrand);
@@ -94,6 +103,7 @@ public class DressController {
     }
 
     @GetMapping("Type/{typeName}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER')")
     public ResponseEntity<?> getDressByType(@PathVariable String typeName) {
         try {
             List<DressDto> dtoList = dressService.findDressByType(typeName);
@@ -105,6 +115,7 @@ public class DressController {
     }
 
     @GetMapping("Size/{size}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER')")
     public ResponseEntity<?> getDressBySize(@PathVariable String size) {
         try {
             List<DressDto> dressDtos = dressService.findDressBySize(size);
@@ -116,6 +127,7 @@ public class DressController {
     }
 
     @PostMapping("/buy")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER','CLIENT')")
     public ResponseEntity<?> BuyDress(@RequestBody DressOrderRequest request) {
         try {
             dressService.buyDress(request);
