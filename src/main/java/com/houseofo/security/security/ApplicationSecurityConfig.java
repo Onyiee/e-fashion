@@ -1,10 +1,8 @@
 package com.houseofo.security.security;
 
-import com.houseofo.data.model.User;
 import com.houseofo.security.jwt.JwtConfig;
 import com.houseofo.security.jwt.JwtTokenVerifier;
 import com.houseofo.security.jwt.JwtUsernameAndPasswordAuthenticationFilter;
-import com.houseofo.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +18,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import javax.crypto.SecretKey;
 
 @Component

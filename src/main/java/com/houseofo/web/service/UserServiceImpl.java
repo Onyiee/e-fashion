@@ -6,12 +6,13 @@ import com.houseofo.data.model.Role;
 import com.houseofo.data.model.User;
 import com.houseofo.data.repository.UserRepository;
 import com.houseofo.exceptions.UserException;
+import com.houseofo.security.security.ApplicationUserRoles;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
@@ -27,11 +28,36 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     ModelMapper modelMapper;
 
+    @Autowired
+    PasswordEncoder encoder;
 
 
 
     @Override
     public UserDto createUser(UserDto userDto) throws UserException {
+        User user= getUserFromDto(userDto);
+        user.setGrantedAuthorities(ApplicationUserRoles.CLIENT.getGrantedAuthorities());
+        User savedUser = userRepository.save(user);
+        //todo address issue fix
+        return modelMapper.map(savedUser, UserDto.class);
+    }
+
+    @Override
+    public UserDto createDesigner(UserDto userDto) throws UserException {
+        User user= getUserFromDto(userDto);
+        user.setGrantedAuthorities(ApplicationUserRoles.DESIGNER.getGrantedAuthorities());
+        User savedUser = userRepository.save(user);
+        return modelMapper.map(savedUser, UserDto.class);
+    }
+    @Override
+    public UserDto createAdmin(UserDto userDto) throws UserException {
+        User user= getUserFromDto(userDto);
+        user.setGrantedAuthorities(ApplicationUserRoles.ADMIN.getGrantedAuthorities());
+        User savedUser = userRepository.save(user);
+        return modelMapper.map(savedUser, UserDto.class);
+    }
+
+    private User getUserFromDto(UserDto userDto) throws UserException {
         String username = userDto.getUserName();
         if (userRepository.findUserByUserName(username).isPresent()) {
             throw new UserException("user already exists.");
@@ -42,9 +68,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new UserException("user already exists with brand " + brand);
         }
         User user = modelMapper.map(userDto, User.class);
-        User savedUser = userRepository.save(user);
-        //todo address issue fix
-        return modelMapper.map(savedUser, UserDto.class);
+        String encryptedPassword = encoder.encode(userDto.getPassword());
+        user.setPassword(encryptedPassword);
+        return user;
     }
 
     @Override

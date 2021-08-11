@@ -14,6 +14,8 @@ import java.util.Optional;
 
 public interface UserService {
     UserDto createUser(UserDto userDto) throws UserException;
+    UserDto createDesigner(UserDto userDto) throws UserException;
+    UserDto createAdmin(UserDto userDto) throws UserException;
     UserDto findUserById(String id) throws UserException;
     List<UserDto> findUserByRole(Role role);
     void updateUser(UserDto userDto, String id) throws UserException;

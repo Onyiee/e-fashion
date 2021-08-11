@@ -22,4 +22,5 @@ public class UserDto {
     private List<Order> orders;
     private List<Address> addresses;
     private String designerBrand;
+    private String password;
 }

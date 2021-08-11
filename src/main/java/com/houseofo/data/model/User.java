@@ -30,12 +30,15 @@ public class User implements UserDetails {
     private List<Order> orders = new ArrayList<>();
     private List<Address> addresses = new ArrayList<>();
     private String designerBrand;
-    private final String password;
-    private final Set<? extends GrantedAuthority> grantedAuthorities;
-    private final boolean isAccountNonExpired;
-    private final boolean isAccountNonLocked;
-    private final boolean isCredentialsNonExpired;
-    private final boolean isEnabled;
+    private String password;
+    private Set<? extends GrantedAuthority> grantedAuthorities;
+    private boolean isAccountNonExpired;
+    private boolean isAccountNonLocked;
+    private boolean isCredentialsNonExpired;
+    private boolean isEnabled;
+
+    public User(){
+    }
 
     public User(String id, String firstName, String lastName, String userName, Role role,
                 List<Dress> dresses, Size size, List<Order> orders, List<Address> addresses,
