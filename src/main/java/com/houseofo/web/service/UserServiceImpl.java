@@ -7,6 +7,7 @@ import com.houseofo.data.model.User;
 import com.houseofo.data.repository.UserRepository;
 import com.houseofo.exceptions.UserException;
 import com.houseofo.security.security.ApplicationUserRoles;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +22,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service("userService")
+@Slf4j
 public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     UserRepository userRepository;
@@ -39,21 +41,27 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setGrantedAuthorities(ApplicationUserRoles.CLIENT.getGrantedAuthorities());
         User savedUser = userRepository.save(user);
         //todo address issue fix
+        log.info("savedUser -->{}",savedUser);
         return modelMapper.map(savedUser, UserDto.class);
     }
 
     @Override
     public UserDto createDesigner(UserDto userDto) throws UserException {
+        UserDto test = new UserDto();
         User user= getUserFromDto(userDto);
         user.setGrantedAuthorities(ApplicationUserRoles.DESIGNER.getGrantedAuthorities());
         User savedUser = userRepository.save(user);
+        log.info("savedUser -->{}",savedUser);
+
         return modelMapper.map(savedUser, UserDto.class);
+
     }
     @Override
     public UserDto createAdmin(UserDto userDto) throws UserException {
         User user= getUserFromDto(userDto);
         user.setGrantedAuthorities(ApplicationUserRoles.ADMIN.getGrantedAuthorities());
         User savedUser = userRepository.save(user);
+        log.info("savedUser -->{}",savedUser);
         return modelMapper.map(savedUser, UserDto.class);
     }
 

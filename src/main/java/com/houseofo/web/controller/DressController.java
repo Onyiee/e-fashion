@@ -31,14 +31,14 @@ public class DressController {
     private DressService dressService;
 
     @GetMapping("")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER','ROLE_CLIENT')")
     public ResponseEntity<?> getAllDresses() {
         List<DressDto> dressDtos = dressService.findAllDresses();
         return new ResponseEntity<>(dressDtos, HttpStatus.OK);
     }
 
     @PostMapping("{designerId}")
-    @PreAuthorize("hasAnyAuthority('user:write')")
+    @PreAuthorize("hasAnyAuthority('dress:write')")
     public ResponseEntity<?> createADress(@PathVariable String designerId, @RequestBody @Valid DressDto dto) {
         try {
             DressDto dressDto = dressService.createDress(designerId, dto);
@@ -50,7 +50,7 @@ public class DressController {
     }
 
     @GetMapping("{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER','ROLE_CLIENT')")
     public ResponseEntity<?> getDressById(@PathVariable String id) {
         try {
             DressDto dressDto = dressService.findById(id);
@@ -62,7 +62,7 @@ public class DressController {
     }
 
     @PatchMapping("{id}")
-    @PreAuthorize("hasAnyAuthority('user:write')")
+    @PreAuthorize("hasAnyAuthority('dress:write')")
     public ResponseEntity<?> updateDressDetails(@PathVariable String id, @RequestBody @Valid DressDto updateContent) {
         try {
             log.info("the dress updated is first in  -->{}", dressService.findById(id));
@@ -77,7 +77,7 @@ public class DressController {
     }
 
     @DeleteMapping("{id}")
-    @PreAuthorize("hasAnyAuthority('user:write')")
+    @PreAuthorize("hasAnyAuthority('dress:write')")
     public ResponseEntity<?> deleteDress(@PathVariable String id) {
         try {
             dressService.deleteDress(id);
@@ -90,7 +90,7 @@ public class DressController {
     }
 
     @GetMapping("userName/{designerBrand}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER','ROLE_CLIENT')")
     public ResponseEntity<?> getDressByDesigner(@PathVariable String designerBrand) {
         try {
             log.info("Id got here-->{}", designerBrand);
@@ -103,7 +103,7 @@ public class DressController {
     }
 
     @GetMapping("Type/{typeName}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER','ROLE_CLIENT')")
     public ResponseEntity<?> getDressByType(@PathVariable String typeName) {
         try {
             List<DressDto> dtoList = dressService.findDressByType(typeName);
@@ -115,7 +115,7 @@ public class DressController {
     }
 
     @GetMapping("Size/{size}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER','ROLE_CLIENT')")
     public ResponseEntity<?> getDressBySize(@PathVariable String size) {
         try {
             List<DressDto> dressDtos = dressService.findDressBySize(size);
@@ -127,7 +127,7 @@ public class DressController {
     }
 
     @PostMapping("/buy")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER','CLIENT')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER','ROLE_CLIENT')")
     public ResponseEntity<?> BuyDress(@RequestBody DressOrderRequest request) {
         try {
             dressService.buyDress(request);

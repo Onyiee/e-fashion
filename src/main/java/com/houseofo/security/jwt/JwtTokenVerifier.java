@@ -38,18 +38,19 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 
         String authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader());
         if (Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith(jwtConfig.getTokenPrefix())){
+            System.out.println("unauth");
             filterChain.doFilter(request, response);
             return;
         }
         String token = authorizationHeader.replace( jwtConfig.getTokenPrefix(),"");
         try {
-//            String secretKey = "securesecuresecuresecuresecuresecuresecuresecure";
 
             Jws<Claims> claimsJws =  Jwts.parser()
                     .setSigningKey(secretKey)
                     .parseClaimsJws(token);
 
             Claims body = claimsJws.getBody();
+            System.out.println(body);
 
             String username = body.getSubject();
             var authorities = (List<Map<String, String >>) body.get("authorities");
@@ -57,7 +58,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 //            System.out.println(authorities);
             Set<SimpleGrantedAuthority> simpleGrantedAuthorities = authorities.stream()
                     .map(m-> new SimpleGrantedAuthority(m.get("authority"))).collect(Collectors.toSet());
-
+            System.out.println(simpleGrantedAuthorities.toString());
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     username,
                     null,

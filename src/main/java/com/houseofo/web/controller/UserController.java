@@ -25,7 +25,7 @@ public class UserController {
     UserService userService;
 
     @GetMapping("")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> getAllUsers() {
         List<UserDto> userDtoList = userService.findAllUsers();
         return new ResponseEntity<>(userDtoList, HttpStatus.OK);
@@ -56,7 +56,7 @@ public class UserController {
     }
 
     @GetMapping("userRole/{role}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> getUserByRole(@PathVariable Role role){
         List<UserDto> userDtos = userService.findUserByRole(role);
         return new ResponseEntity<>(userDtos, HttpStatus.OK);

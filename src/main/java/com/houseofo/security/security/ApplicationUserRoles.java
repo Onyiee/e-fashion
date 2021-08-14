@@ -11,9 +11,9 @@ import static com.houseofo.data.model.Role.CLIENT;
 import static com.houseofo.security.security.ApplicationUserPermissions.*;
 
 public enum ApplicationUserRoles {
-    ADMIN(Sets.newHashSet(USER_WRITE,USER_READ,DRESS_WRITE, DRESS_READ)),
-    DESIGNER(Sets.newHashSet(USER_READ,DRESS_READ,DRESS_WRITE)),
-    CLIENT(Sets.newHashSet(DRESS_READ,USER_READ));
+    ADMIN(Sets.newHashSet(USER_WRITE,USER_READ,DRESS_WRITE, DRESS_READ,ORDER_WRITE,ORDER_READ)),
+    DESIGNER(Sets.newHashSet(USER_READ,DRESS_READ,DRESS_WRITE,ORDER_WRITE,ORDER_READ)),
+    CLIENT(Sets.newHashSet(DRESS_READ,USER_READ,ORDER_WRITE,ORDER_READ));
 
     private final Set<ApplicationUserPermissions> permissions;
 

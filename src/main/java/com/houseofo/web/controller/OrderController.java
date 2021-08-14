@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,7 @@ public class OrderController {
     OrderService orderService;
 
     @GetMapping("")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> getAllOrders() {
         List<OrderDto> orderDtos = orderService.findAllOrders();
         return new ResponseEntity<>(orderDtos, HttpStatus.OK);
@@ -33,6 +35,7 @@ public class OrderController {
     }
 
     @GetMapping("byId/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER')")
     public ResponseEntity<?> getOrderById(@PathVariable String id){
         try {
             OrderDto dto = orderService.findById(id);
@@ -44,12 +47,14 @@ public class OrderController {
     }
 
     @GetMapping("{date}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER','ROLE_CLIENT')")
     public ResponseEntity<?> getOrderByDateOrdered(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate date){
             List<OrderDto> orderDtos = orderService.findOrderByDateOrdered(date);
             return new ResponseEntity<>(orderDtos, HttpStatus.OK);
     }
 
     @GetMapping("/complete")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> getCompletedOrders(){
         List<OrderDto> orderDtos = orderService.findCompletedOrders();
         return new ResponseEntity<>(orderDtos, HttpStatus.OK);
@@ -57,6 +62,7 @@ public class OrderController {
 
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAnyAuthority('order:write')")
     public ResponseEntity<?> cancelOrder(@PathVariable String id){
         try {
             orderService.cancelOrder(id);
