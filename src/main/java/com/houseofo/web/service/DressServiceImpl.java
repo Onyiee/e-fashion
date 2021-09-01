@@ -68,7 +68,6 @@ public class DressServiceImpl implements DressService {
         Dress dress = dressRepository.findById(id)
                 .orElseThrow(() -> new DressException("Id does not match any dress"));
         modelMapper.map(updateContent, dress);
-//        dressMapper.updateDressFromDto(updateContent, dress);
         dressRepository.save(dress);
     }
 
@@ -132,7 +131,6 @@ public class DressServiceImpl implements DressService {
                         .map(dress -> modelMapper.map(
                                 dress, DressDto.class
                         )).collect(Collectors.toList());
-
                 return dressDtos;
             }
         }
@@ -146,7 +144,6 @@ public class DressServiceImpl implements DressService {
                 .orElseThrow(() -> new UserException("Id does not match any user"));
         Order order = new Order();
         order.setUser(user);
-//        order.setAddress(user.getAddresses().get(0));
         Map<String, Integer> orderDetails = request.getDressOrderDetails();
         for (String dressId : orderDetails.keySet()) {
             Dress dress = dressRepository.findById(dressId)
@@ -163,6 +160,4 @@ public class DressServiceImpl implements DressService {
         order.setDateOrdered(LocalDate.now());
         orderService.saveOrder(order);
     }
-
-
 }

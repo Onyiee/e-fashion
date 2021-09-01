@@ -31,7 +31,6 @@ public class OrderController {
     public ResponseEntity<?> getAllOrders() {
         List<OrderDto> orderDtos = orderService.findAllOrders();
         return new ResponseEntity<>(orderDtos, HttpStatus.OK);
-        //todo fix the path to get all orders and get completed orders
     }
 
     @GetMapping("byId/{id}")

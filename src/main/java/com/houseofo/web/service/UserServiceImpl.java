@@ -40,7 +40,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user= getUserFromDto(userDto);
         user.setGrantedAuthorities(ApplicationUserRoles.CLIENT.getGrantedAuthorities());
         User savedUser = userRepository.save(user);
-        //todo address issue fix
         log.info("savedUser -->{}",savedUser);
         return modelMapper.map(savedUser, UserDto.class);
     }
@@ -132,11 +131,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public Optional<UserDto> findUserByName(String userName) throws UserException {
-//        User user = userRepository.findUserByUserName(userName)
-//                .orElseThrow(() -> new UserException("No user matches the name passed in."));
-//
-//        UserDto userDto = modelMapper.map(user, UserDto.class);
-//        return userDto;
         Optional<User> userOptional = Optional.ofNullable(userRepository.findUserByUserName(userName)
                 .orElseThrow(() -> new UserException("No user matches the name passed in.")));
         Optional<UserDto> userDto = modelMapper.map(userOptional, (Type) UserDto.class);

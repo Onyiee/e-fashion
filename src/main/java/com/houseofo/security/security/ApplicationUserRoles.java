@@ -3,11 +3,9 @@ package com.houseofo.security.security;
 import com.google.common.collect.Sets;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.houseofo.data.model.Role.CLIENT;
 import static com.houseofo.security.security.ApplicationUserPermissions.*;
 
 public enum ApplicationUserRoles {

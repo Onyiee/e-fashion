@@ -26,7 +26,7 @@ import javax.crypto.SecretKey;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     private final PasswordEncoder passwordEncoder;
-    //    private final ApplicationUserService applicationUserService;
+
     @Autowired
     @Qualifier("userService")
     private UserDetailsService userDetailsService;

@@ -65,9 +65,7 @@ public class DressController {
     @PreAuthorize("hasAnyAuthority('dress:write')")
     public ResponseEntity<?> updateDressDetails(@PathVariable String id, @RequestBody @Valid DressDto updateContent) {
         try {
-            log.info("the dress updated is first in  -->{}", dressService.findById(id));
             dressService.updateDress(id, updateContent);
-            log.info("the dress updated is -->{}", dressService.findById(id));
             ApiResponse response = new ApiResponse(true, "updated successfully");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (DressException exception) {
@@ -93,7 +91,6 @@ public class DressController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DESIGNER','ROLE_CLIENT')")
     public ResponseEntity<?> getDressByDesigner(@PathVariable String designerBrand) {
         try {
-            log.info("Id got here-->{}", designerBrand);
             List<DressDto> dressDtos = dressService.findDressByDesigner(designerBrand);
             return new ResponseEntity<>(dressDtos, HttpStatus.OK);
         } catch (UserException exception) {
