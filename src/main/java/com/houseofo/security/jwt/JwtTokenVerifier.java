@@ -38,7 +38,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 
         String authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader());
         if (Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith(jwtConfig.getTokenPrefix())){
-            System.out.println("unauth");
+
             filterChain.doFilter(request, response);
             return;
         }
@@ -50,12 +50,8 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
                     .parseClaimsJws(token);
 
             Claims body = claimsJws.getBody();
-            System.out.println(body);
-
             String username = body.getSubject();
             var authorities = (List<Map<String, String >>) body.get("authorities");
-//            System.out.println(body.get("authorities"));
-//            System.out.println(authorities);
             Set<SimpleGrantedAuthority> simpleGrantedAuthorities = authorities.stream()
                     .map(m-> new SimpleGrantedAuthority(m.get("authority"))).collect(Collectors.toSet());
             System.out.println(simpleGrantedAuthorities.toString());
@@ -69,7 +65,5 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
             throw new IllegalStateException(String.format("token %s cannot be trusted",token));
         }
         filterChain.doFilter(request, response);
-
     }
-
 }

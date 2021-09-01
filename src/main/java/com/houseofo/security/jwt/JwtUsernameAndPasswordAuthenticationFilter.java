@@ -31,10 +31,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
-        System.out.println("auth attempt");
         try {
-
-            System.out.println("git here");
             UsernameAndPasswordAuthenticationRequest authenticationRequest =
                     new ObjectMapper().readValue(request.getInputStream(), UsernameAndPasswordAuthenticationRequest.class);
             System.out.println(authenticationRequest.toString());
@@ -45,14 +42,11 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
             System.out.println(authentication);
 
             Authentication authenticate = authenticationManager.authenticate(authentication);
-            System.out.println(authenticate);
             return authenticate;
 
         } catch (IOException e) {
-            System.out.println("ex");
             throw new RuntimeException(e);
         } catch (Exception e){
-            System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -63,7 +57,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
-        System.out.println("auth success");
+
         String token = Jwts.builder()
                 .setSubject(authResult.getName())
                 .claim("authorities", authResult.getAuthorities())
