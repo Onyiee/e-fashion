@@ -13,4 +13,5 @@ public class DressOrderRequest {
     private String userId;
     @NotNull(message = "Field must be filled.")
     private Map<String, Integer> dressOrderDetails =new HashMap<>();
+
 }

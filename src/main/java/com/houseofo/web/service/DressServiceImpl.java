@@ -27,7 +27,7 @@ public class DressServiceImpl implements DressService {
     @Autowired
     DressRepository dressRepository;
 
-    @Autowired
+
     ModelMapper modelMapper;
 
     @Autowired
@@ -39,16 +39,24 @@ public class DressServiceImpl implements DressService {
     @Autowired
     OrderService orderService;
 
+    @Autowired
+    public DressServiceImpl(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public DressDto createDress(String designerId, DressDto dressDto) throws DressException, UserException {
+        log.info("dress dto ---> {}", dressDto);
         Dress newDress = modelMapper.map(dressDto, Dress.class);
+        log.info("new dress ---> {}", newDress);
         User designer = userService.internalFindUserById(designerId);
+        log.info("des --> {}", designer);
         newDress.setDesigner(designer);
         if (dressRepository.findDressByDressName(newDress.getDressName()).isPresent()) {
             throw new DressException("Dress already exists.");
         }
         Dress dress = dressRepository.save(newDress);
+        log.info("dresses --> {}", designer);
         designer.getDresses().add(dress);
         userRepository.save(designer);
         return modelMapper.map(dress, DressDto.class);
@@ -144,6 +152,7 @@ public class DressServiceImpl implements DressService {
                 .orElseThrow(() -> new UserException("Id does not match any user"));
         Order order = new Order();
         order.setUser(user);
+
         Map<String, Integer> orderDetails = request.getDressOrderDetails();
         for (String dressId : orderDetails.keySet()) {
             Dress dress = dressRepository.findById(dressId)

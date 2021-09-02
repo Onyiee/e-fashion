@@ -116,7 +116,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User internalFindUserById(String id) throws UserException {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserException("No user matches the ID passed in."));
-        return modelMapper.map(user, User.class);
+        log.info("user service user ---> {}", user);
+        return user;
     }
 
     @Override

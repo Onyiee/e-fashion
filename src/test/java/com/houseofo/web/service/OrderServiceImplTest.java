@@ -3,8 +3,8 @@ package com.houseofo.web.service;
 import com.houseofo.data.dtos.OrderDto;
 import com.houseofo.data.model.*;
 import com.houseofo.data.repository.OrderRepository;
+import com.houseofo.data.repository.UserRepository;
 import com.houseofo.exceptions.OrderException;
-import com.houseofo.util.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,14 +31,16 @@ class OrderServiceImplTest {
     @Mock
     OrderRepository orderRepository;
 
+
     @Mock
-    ModelMapper modelMapper;
+    UserRepository userRepository;
 
     @InjectMocks
-    OrderServiceImpl orderService;
+    OrderServiceImpl orderService = new OrderServiceImpl(new ModelMapper());
 
     Order order;
     Order order1;
+    User user;
 
 
     @BeforeEach
@@ -46,6 +48,7 @@ class OrderServiceImplTest {
 
         order = new Order();
         order1 = new Order();
+        user = new User();
     }
 
     @AfterEach
@@ -70,12 +73,12 @@ class OrderServiceImplTest {
     void createOrder() throws OrderException {
         //given
         OrderDto orderDto = new OrderDto();
+        orderDto.setUserId("001");
         //when
-        order = modelMapper.map(orderDto, Order.class);
+        when(userRepository.findUserById(anyString())).thenReturn(user);
         orderService.createOrder(orderDto);
         //then
-        verify(orderRepository).save(order);
-        log.info("order saved is {}", order);
+        verify(orderRepository).save(any());
     }
 
     @Test

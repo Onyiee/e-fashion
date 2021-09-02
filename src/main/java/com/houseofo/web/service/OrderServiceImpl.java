@@ -25,12 +25,16 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     DressRepository dressRepository;
 
-    @Autowired
+
     ModelMapper modelMapper;
 
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    public OrderServiceImpl(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public OrderDto findById(String id) throws OrderException {
@@ -62,11 +66,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto createOrder(OrderDto orderDto) throws OrderException {
+        log.info("orderDto --> {}", orderDto);
         if (orderRepository.findById(orderDto.getId()).isPresent()) {
             throw new OrderException("Order already exists");
         }
         Order order = modelMapper.map(orderDto, Order.class);
+        log.info("order --> {}", order);
+        log.info("test --> {}", orderDto.getUserId());
         User user = userRepository.findUserById(orderDto.getUserId());
+        log.info("user --> {}", user);
         order.setUser(user);
         order.setDateOrdered(LocalDate.now());
         orderRepository.save(order);
